@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.transaction.AfterTransaction;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +30,7 @@ class MemberMapperTest {
     @Test
     @DisplayName("Member 객체를 DB에 저장")
     @Transactional
+    @Rollback
     void insertMemberTest() {
         Member testMember = new Member.Builder("user01")
                 .userpw("user01")
