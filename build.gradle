@@ -30,6 +30,7 @@ dependencies {
         because 'log4jdbc-log4j2 v1.16 can not covered ResultSet.getObject(String columnLabel, Class<T> type) method'
     }
     implementation 'org.apache.commons:commons-lang3:3.10'
+    implementation 'javax.inject:javax.inject:1'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'mysql:mysql-connector-java'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {

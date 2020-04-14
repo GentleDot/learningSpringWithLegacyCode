@@ -7,9 +7,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class MySQLConnectionTest {
-//    private static final String DRIVER = "com.mysql.jdbc.driver"; // deprecated
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
-//    private static final String URL = "jdbc:mysql://127.0.0.1:3306/book_ex?serverTimezone=UTC";
     private static final String URL = "jdbc:mysql://127.0.0.1:3306/book_ex";
     private static final String USER = "gentledot";
     private static final String PW = "Password2020";
