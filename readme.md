@@ -77,3 +77,23 @@
     - Mapper 구성 : interface MemberMapper
     - 동작 테스트 : MemberMapperTest.class
     - log4jdbc-log4j2 로그 사용
+    
+    
+## 기본적인 기능의 게시물 관리
+### 기능 구현 계획
+- 개발 목표 (순서 및 시나리오 설정)
+- 개발 준비
+    - DB
+    - Spring MVC
+    - View
+
+### 프로젝트 생성 준비
+- DB 작업
+    - Datasource 설정
+    - Table 생성 : tbl_board
+    
+- MVC의 한글 깨짐 처리 해결
+    - UTF-8 처리 필터 등록
+
+- View 구현 준비
+    - static resouce의 path mapping 설정
