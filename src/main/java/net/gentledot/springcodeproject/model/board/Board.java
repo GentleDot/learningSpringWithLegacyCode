@@ -57,6 +57,10 @@ public class Board {
         return viewcnt;
     }
 
+    public long increaseAndGetViewcnt() {
+        return ++viewcnt;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)

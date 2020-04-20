@@ -97,3 +97,11 @@
 
 - View 구현 준비
     - static resouce의 path mapping 설정
+
+### Domain 객체 구현
+- Board.class 생성
+- Board 생성 Test 
+
+### Repository 구현
+- BoardMapper Interface 생성 (@Mapper)
+- BoardMapper 기능 Test (@MybatisTest)

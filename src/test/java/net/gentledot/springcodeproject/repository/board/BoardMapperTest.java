@@ -1,6 +1,7 @@
-package net.gentledot.springcodeproject.repository.member;
+package net.gentledot.springcodeproject.repository.board;
 
 import net.gentledot.springcodeproject.model.board.Board;
+import net.gentledot.springcodeproject.repository.member.BoardMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
@@ -8,22 +9,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.TransactionManager;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.jupiter.api.Assertions.*;
 
 @MybatisTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class BoardMapperTest {
-    private static final Logger log = LoggerFactory.getLogger(MemberMapperTest.class);
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     BoardMapper boardMapper;
