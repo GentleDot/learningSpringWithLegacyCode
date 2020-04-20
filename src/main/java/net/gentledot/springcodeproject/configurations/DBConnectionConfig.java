@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Configuration;
 import javax.sql.DataSource;
 
 @Configuration
-//@MapperScan(value = "net.gentledot.springcodeproject.repository")
 public class DBConnectionConfig {
 
     private final DataSource dataSource;

@@ -100,12 +100,9 @@ public class Board {
         }
 
         public Builder writer(String writer) {
-            this.writer = writer;
-            return this;
-        }
-
-        public Builder regDate(LocalDate regDate) {
-            this.regDate = regDate;
+            if (this.writer == null){
+                this.writer = writer;
+            }
             return this;
         }
 

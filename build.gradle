@@ -37,6 +37,7 @@ dependencies {
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
+    testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:2.1.2'
 }
 
 test {
