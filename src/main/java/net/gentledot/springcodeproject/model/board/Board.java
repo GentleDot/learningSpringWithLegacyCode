@@ -10,14 +10,16 @@ import java.time.LocalDate;
 import static com.google.common.base.Preconditions.checkArgument;
 
 public class Board {
-    private long bno;
+    private Long bno;
     private String title;
     private String content;
     private String writer;
     private LocalDate regDate;
-    private long viewcnt;
+    private Long viewcnt;
 
-    public Board(long bno, String title, String content, String writer, LocalDate regDate, long viewcnt) {
+    public Board(Long bno, String title, String content, String writer, LocalDate regDate, Long viewcnt) {
+        viewcnt = ObjectUtils.defaultIfNull(viewcnt, 0L);
+
         checkArgument(StringUtils.isNotBlank(title), "게시물 제목은 빈 값이 될 수 없습니다.");
         checkArgument(title.getBytes(StandardCharsets.UTF_8).length <= 200, "게시물 제목은 200bytes 내외로 작성 가능합니다.");
         checkArgument(StringUtils.isNotBlank(writer), "게시물 제목은 빈 값이 될 수 없습니다.");
@@ -29,8 +31,8 @@ public class Board {
         this.title = title;
         this.content = content;
         this.writer = writer;
-        this.regDate = ObjectUtils.defaultIfNull(regDate, LocalDate.now()) ;
-        this.viewcnt = ObjectUtils.defaultIfNull(viewcnt, 0L);
+        this.regDate = ObjectUtils.defaultIfNull(regDate, LocalDate.now());
+        this.viewcnt = viewcnt;
     }
 
     public long getBno() {
@@ -74,12 +76,12 @@ public class Board {
     }
 
     public static final class Builder {
-        private long bno;
+        private Long bno;
         private String title;
         private String content;
         private String writer;
         private LocalDate regDate;
-        private long viewcnt;
+        private Long viewcnt;
 
         public Builder() {
         }

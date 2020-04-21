@@ -46,7 +46,7 @@ class BoardMapperTest {
         String title = "testTitle";
         String content = "testContent";
         String writer = "testUser";
-        Board board = boardMapper.findByBno(1L);
+        Board board = boardMapper.findByBno(1L).get();
 
         assertThat(board.getBno(), is(1L));
         assertThat(board.getTitle(), is(title));
@@ -61,7 +61,7 @@ class BoardMapperTest {
     @Test
     @DisplayName("게시물 1번 수정 테스트")
     void updateTest() {
-        Board board = boardMapper.findByBno(1L);
+        Board board = boardMapper.findByBno(1L).get();
         String title = board.getTitle();
         String content = board.getContent();
         String writer = board.getWriter();
@@ -77,7 +77,7 @@ class BoardMapperTest {
 
         Integer result = boardMapper.update(editedBoard);
 
-        Board updatedBoard = boardMapper.findByBno(1L);
+        Board updatedBoard = boardMapper.findByBno(1L).get();
 
         assertThat(result, is(1));
         assertThat(updatedBoard.getTitle().equals(title), is(false));

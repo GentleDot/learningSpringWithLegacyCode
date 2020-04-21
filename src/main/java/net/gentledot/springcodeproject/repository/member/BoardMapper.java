@@ -4,6 +4,7 @@ import net.gentledot.springcodeproject.model.board.Board;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Mapper
 public interface BoardMapper {
@@ -14,7 +15,7 @@ public interface BoardMapper {
     @Select("select bno, title, content, writer, regdate, viewcnt " +
             "from tbl_board " +
             "where bno = #{bno}")
-    Board findByBno(Long boardNo);
+    Optional<Board> findByBno(Long boardNo);
 
     @Update("update tbl_board " +
             "set " +
