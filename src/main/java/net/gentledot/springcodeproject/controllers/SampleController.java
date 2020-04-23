@@ -48,7 +48,7 @@ public class SampleController {
     public String doE(RedirectAttributes redirectAttributes) {
         log.info("doE called but redirect to /doF...............");
 
-        redirectAttributes.addFlashAttribute("msg", "this is the message!! with redirected.");
+        redirectAttributes.addAttribute("msg", "this is the message!! with redirected.");
         return "redirect:/web/doF";
     }
 

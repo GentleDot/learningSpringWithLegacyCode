@@ -105,3 +105,25 @@
 ### Repository 구현
 - BoardMapper Interface 생성 (@Mapper)
 - BoardMapper 기능 Test (@MybatisTest)
+
+### Service 구현
+- BoardService 구현
+    - 등록
+    - 조회
+    - 수정
+    - 삭제
+
+### Controller 구현
+- BoardController 구현
+    - 게시물 등록 기능
+        - 등록 화면 요청 : boardRegisterView() [GET board/register]
+        - 등록 요청 : registBoard() [POST board/register]
+    - 게시물 목록 조회
+        - 목록 화면 요청 : listAllBoard() [GET board/listAll]
+    - 게시물 조회
+        - 조회 화면 요청 : readBoard() [GET board/read?bno=#]
+    - 게시물 삭제
+        - 삭제 요청 : removeBoard() [DELETE board/remove]
+    - 게시물 수정
+        - 수정 화면 요청 : boardModifierView() [GET board/modify?bno=#]
+        - 수정 요청 : modifyBoard() [PUT board/modify]

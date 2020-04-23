@@ -28,7 +28,7 @@ class BoardTest {
         assertThat(newBoard.getTitle(), is(title));
         assertThat(newBoard.getContent(), is(content));
         assertThat(newBoard.getWriter(), is(username));
-        assertThat(newBoard.getRegDate(), is(notNullValue()));
+        assertThat(newBoard.getRegdate(), is(notNullValue()));
         assertThat(newBoard.getViewcnt(), is(0L));
 
         log.debug("생성된 객체 : {}", newBoard);
@@ -53,7 +53,7 @@ class BoardTest {
         assertThat(newBoard.getTitle(), is(title));
         assertThat(newBoard.getContent(), is(content));
         assertThat(newBoard.getWriter(), is(username));
-        assertThat(newBoard.getRegDate(), is(notNullValue()));
+        assertThat(newBoard.getRegdate(), is(notNullValue()));
         assertThat(beforeViewCnt, is(0L));
         assertThat(newBoard.getViewcnt() == beforeViewCnt, is(false));
         assertThat(newBoard.getViewcnt(), is(viewcnt));

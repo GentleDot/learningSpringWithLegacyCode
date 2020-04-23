@@ -52,7 +52,7 @@ class BoardMapperTest {
         assertThat(board.getTitle(), is(title));
         assertThat(board.getContent(), is(content));
         assertThat(board.getWriter(), is(writer));
-        assertThat(board.getRegDate(), is(notNullValue()));
+        assertThat(board.getRegdate(), is(notNullValue()));
         assertThat(board.getViewcnt(), is(0L));
 
         log.debug("조회된 게시물 : {}", board);

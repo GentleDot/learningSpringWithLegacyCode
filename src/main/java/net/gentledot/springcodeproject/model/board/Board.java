@@ -5,7 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -14,10 +14,10 @@ public class Board {
     private String title;
     private String content;
     private String writer;
-    private LocalDate regDate;
+    private LocalDateTime regdate;
     private Long viewcnt;
 
-    public Board(Long bno, String title, String content, String writer, LocalDate regDate, Long viewcnt) {
+    public Board(Long bno, String title, String content, String writer, LocalDateTime regdate, Long viewcnt) {
         viewcnt = ObjectUtils.defaultIfNull(viewcnt, 0L);
 
         checkArgument(StringUtils.isNotBlank(title), "게시물 제목은 빈 값이 될 수 없습니다.");
@@ -31,7 +31,7 @@ public class Board {
         this.title = title;
         this.content = content;
         this.writer = writer;
-        this.regDate = ObjectUtils.defaultIfNull(regDate, LocalDate.now());
+        this.regdate = ObjectUtils.defaultIfNull(regdate, LocalDateTime.now());
         this.viewcnt = viewcnt;
     }
 
@@ -51,8 +51,8 @@ public class Board {
         return writer;
     }
 
-    public LocalDate getRegDate() {
-        return regDate;
+    public LocalDateTime getRegdate() {
+        return regdate;
     }
 
     public long getViewcnt() {
@@ -70,7 +70,7 @@ public class Board {
                 .append("title", title)
                 .append("content", content)
                 .append("writer", writer)
-                .append("regDate", regDate)
+                .append("regdate", regdate)
                 .append("viewcnt", viewcnt)
                 .toString();
     }
@@ -80,7 +80,7 @@ public class Board {
         private String title;
         private String content;
         private String writer;
-        private LocalDate regDate;
+        private LocalDateTime regdate;
         private Long viewcnt;
 
         public Builder() {
@@ -91,7 +91,7 @@ public class Board {
             this.title = board.title;
             this.content = board.content;
             this.writer = board.writer;
-            this.regDate = board.regDate;
+            this.regdate = board.regdate;
             this.viewcnt = board.viewcnt;
         }
 
@@ -113,7 +113,7 @@ public class Board {
         }
 
         public Board build() {
-            return new Board(bno, title, content, writer, regDate, viewcnt);
+            return new Board(bno, title, content, writer, regdate, viewcnt);
         }
     }
 }
