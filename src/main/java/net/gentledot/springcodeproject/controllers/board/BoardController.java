@@ -51,21 +51,21 @@ public class BoardController {
     }
 
     @GetMapping(value = "/read")
-    public void readBoard(@RequestParam("bno") Long bno, Model model) {
-        model.addAttribute(boardService.read(bno));
+    public void readBoard(@RequestParam("bno") Long boardNo, Model model) {
+        model.addAttribute(boardService.read(boardNo));
     }
 
     @DeleteMapping(value = "/remove")
-    public String removeBoard(@RequestParam("bno") Long bno, RedirectAttributes redirectAttr) {
-        boardService.remove(bno);
-        redirectAttr.addFlashAttribute("msg", SUCCESS_FLAG);
+    public String removeBoard(@RequestParam("bno") Long boardNo, RedirectAttributes redirectAttr) {
+        boardService.remove(boardNo);
+        redirectAttr.addFlashAttribute("result", SUCCESS_FLAG);
 
         return "redirect:/board/listAll";
     }
 
     @GetMapping(value = "/modify")
-    public void boardModifierView(Long bno, Model model) {
-        model.addAttribute(boardService.read(bno));
+    public void boardModifierView(@RequestParam("bno") Long boardNo, Model model) {
+        model.addAttribute(boardService.read(boardNo));
     }
 
     @PutMapping(value = "/modify")
@@ -73,7 +73,7 @@ public class BoardController {
         log.info("포스트 수정...");
 
         boardService.modify(board);
-        redirectAttributes.addFlashAttribute("msg", SUCCESS_FLAG);
+        redirectAttributes.addFlashAttribute("result", SUCCESS_FLAG);
 
         return "redirect:/board/listAll";
     }
