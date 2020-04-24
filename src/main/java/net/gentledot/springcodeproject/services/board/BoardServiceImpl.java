@@ -1,5 +1,7 @@
 package net.gentledot.springcodeproject.services.board;
 
+import net.gentledot.springcodeproject.errors.TargetNotFoundException;
+import net.gentledot.springcodeproject.errors.TransactionFailException;
 import net.gentledot.springcodeproject.model.board.Board;
 import net.gentledot.springcodeproject.repository.member.BoardMapper;
 import org.springframework.stereotype.Service;
@@ -21,14 +23,14 @@ public class BoardServiceImpl implements BoardService {
     public void regist(Board board) {
         Integer result = boardMapper.create(board);
         if (result != 1) {
-            throw new RuntimeException("게시물 생성에 실패하였습니다.");
+            throw new TransactionFailException("저장에 실패하였습니다.", Board.class);
         }
     }
 
     @Override
     public Board read(Long bno) {
         return boardMapper.findByBno(bno)
-                .orElseThrow(() -> new RuntimeException("해당 ID의 게시물을 찾을 수 없습니다."));
+                .orElseThrow(() -> new TargetNotFoundException(bno, Board.class));
     }
 
     @Override
@@ -36,7 +38,7 @@ public class BoardServiceImpl implements BoardService {
     public void modify(Board board) {
         Integer result = boardMapper.update(board);
         if (result != 1) {
-            throw new RuntimeException("게시물 수정에 실패하였습니다.");
+            throw new TransactionFailException("수정에 실패하였습니다.", Board.class);
         }
     }
 
@@ -45,7 +47,7 @@ public class BoardServiceImpl implements BoardService {
     public void remove(Long bno) {
         Integer result = boardMapper.delete(bno);
         if (result != 1) {
-            throw new RuntimeException("게시물 삭제에 실패하였습니다.");
+            throw new TransactionFailException("삭제에 실패하였습니다.", Board.class);
         }
     }
 

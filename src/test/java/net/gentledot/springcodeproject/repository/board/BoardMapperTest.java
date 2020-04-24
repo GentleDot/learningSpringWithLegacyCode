@@ -76,7 +76,6 @@ class BoardMapperTest {
                 .build();
 
         Integer result = boardMapper.update(editedBoard);
-
         Board updatedBoard = boardMapper.findByBno(1L).get();
 
         assertThat(result, is(1));

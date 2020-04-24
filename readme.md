@@ -127,3 +127,10 @@
     - 게시물 수정
         - 수정 화면 요청 : boardModifierView() [GET board/modify?bno=#]
         - 수정 요청 : modifyBoard() [PUT board/modify]
+
+### 예외 처리 설정
+- CommonExceptionAdvice.class 를 통해 예상되는 Exception 처리
+    - [log_debug] apiErrorHandler() : controller, service 내 비즈니스 로직 처리에서 예외가 발생하는 경우
+    - [log_warn] myBatisSystemExceptionHandler() : MyBatis 기능 동작에서 예외가 발생한 경우
+    - [log_warn] nullPointerExceptionHandler() : null을 참조할 때 발생하는 예외
+    - [log_error] unexpectedExceptionHandler() : 예상하지 못한 예외가 발생한 경우

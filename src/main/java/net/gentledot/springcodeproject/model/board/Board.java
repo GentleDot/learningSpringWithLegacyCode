@@ -27,7 +27,7 @@ public class Board {
         checkArgument(viewcnt >= 0, "view count 값은 음수를 허용하지 않습니다.");
 
 
-        this.bno = bno;
+        this.bno = ObjectUtils.defaultIfNull(bno, 0L);
         this.title = title;
         this.content = content;
         this.writer = writer;
