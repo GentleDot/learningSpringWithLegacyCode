@@ -13,24 +13,24 @@ public interface BoardMapper {
             "VALUES (#{title}, #{content}, #{writer})")
     Integer create(Board board);
 
-    @Select("select bno, title, content, writer, regdate, viewcnt " +
-            "from tbl_board " +
-            "where bno = #{bno}")
+    @Select("SELECT bno, title, content, writer, regdate, viewcnt " +
+            "FROM tbl_board " +
+            "WHERE bno = #{bno}")
     Optional<Board> findByBno(Long boardNo);
 
-    @Update("update tbl_board " +
-            "set " +
+    @Update("UPDATE tbl_board " +
+            "SET " +
             "    title = #{title}, content = #{content} " +
-            "where bno = #{bno}")
+            "WHERE bno = #{bno}")
     Integer update(Board board);
 
-    @Delete("delete from tbl_board " +
-            "where bno = #{bno}")
+    @Delete("DELETE FROM tbl_board " +
+            "WHERE bno = #{bno}")
     Integer delete(Long boardNo);
 
-    @Select("select bno, title, content, writer, regdate, viewcnt " +
-            "from tbl_board " +
-            "order by bno desc, regdate desc")
+    @Select("SELECT bno, title, content, writer, regdate, viewcnt " +
+            "FROM tbl_board " +
+            "ORDER BY bno DESC, regdate DESC LIMIT 300")
     List<Board> findAll();
 
     @Select("SELECT bno, title, content, writer, regdate, viewcnt " +

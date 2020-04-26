@@ -1,5 +1,6 @@
 package net.gentledot.springcodeproject.controllers.board;
 
+import net.gentledot.springcodeproject.model.PageCriteria;
 import net.gentledot.springcodeproject.model.board.Board;
 import net.gentledot.springcodeproject.services.board.BoardService;
 import org.junit.jupiter.api.DisplayName;
@@ -13,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import static org.mockito.ArgumentMatchers.isNotNull;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -136,5 +138,15 @@ class BoardControllerTest {
                 .andExpect(status().isFound())  // status 302
                 .andExpect(view().name("redirect:/board/listAll")) // redirect view
                 .andExpect(flash().attribute("result", "SUCCESS")); // FlashAttribute
+    }
+
+    @Test
+    @DisplayName("페이징 처리된 게시물 목록 조회 요청")
+    void listAllBoardWithPaginationTest() throws Exception {
+        ResultActions perform = mockMvc.perform(get("/board/listCri"));
+        perform.andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("pageCriteria")) // net.gentledot.springcodeproject.model.PageCriteria@65b7f80f[page=1,perPageNum=10]
+                .andExpect(view().name("board/listCri"));
     }
 }

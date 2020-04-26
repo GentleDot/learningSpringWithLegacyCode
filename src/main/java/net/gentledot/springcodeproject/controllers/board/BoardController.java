@@ -1,5 +1,6 @@
 package net.gentledot.springcodeproject.controllers.board;
 
+import net.gentledot.springcodeproject.model.PageCriteria;
 import net.gentledot.springcodeproject.model.board.Board;
 import net.gentledot.springcodeproject.services.board.BoardService;
 import org.slf4j.Logger;
@@ -50,6 +51,13 @@ public class BoardController {
         model.addAttribute("list", list);
     }
 
+    @GetMapping(value = "/listCri")
+    public void listAllBoardWithPagination(PageCriteria criteria, Model model) {
+        log.info("페이징 기준이 설정된 게시물 리스트 조회");
+
+        model.addAttribute("list", boardService.listAllWithPagination(criteria));
+    }
+
     @GetMapping(value = "/read")
     public void readBoard(@RequestParam("bno") Long boardNo, Model model) {
         model.addAttribute(boardService.read(boardNo));
@@ -77,5 +85,6 @@ public class BoardController {
 
         return "redirect:/board/listAll";
     }
+
 
 }
