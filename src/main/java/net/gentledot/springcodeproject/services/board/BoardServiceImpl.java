@@ -3,7 +3,7 @@ package net.gentledot.springcodeproject.services.board;
 import net.gentledot.springcodeproject.errors.TargetNotFoundException;
 import net.gentledot.springcodeproject.errors.TransactionFailException;
 import net.gentledot.springcodeproject.model.board.Board;
-import net.gentledot.springcodeproject.repository.member.BoardMapper;
+import net.gentledot.springcodeproject.repository.board.BoardMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

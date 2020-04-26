@@ -1,7 +1,6 @@
 package net.gentledot.springcodeproject.repository.board;
 
 import net.gentledot.springcodeproject.model.board.Board;
-import net.gentledot.springcodeproject.repository.member.BoardMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
@@ -100,5 +99,18 @@ class BoardMapperTest {
         List<Board> list = boardMapper.findAll();
 
         assertThat(list, is(notNullValue()));
+    }
+
+    @Test
+    @DisplayName("게시물 페이징 처리 테스트")
+    void findAllWithPaginationTest(){
+        int page = 3;
+        List<Board> boardList = boardMapper.findAllWithPagination(page);
+
+        assertThat(boardList.size(), is(10));
+
+        for (Board item : boardList){
+            log.debug("조회된 board 확인 : {}", item);
+        }
     }
 }
