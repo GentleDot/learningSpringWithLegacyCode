@@ -2,6 +2,7 @@ package net.gentledot.springcodeproject.services.board;
 
 import net.gentledot.springcodeproject.errors.TargetNotFoundException;
 import net.gentledot.springcodeproject.errors.TransactionFailException;
+import net.gentledot.springcodeproject.model.PageCriteria;
 import net.gentledot.springcodeproject.model.board.Board;
 import net.gentledot.springcodeproject.repository.board.BoardMapper;
 import org.springframework.stereotype.Service;
@@ -54,5 +55,10 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public List<Board> listAll() {
         return boardMapper.findAll();
+    }
+
+    @Override
+    public List<Board> listAllWithPagination(PageCriteria criteria) {
+        return boardMapper.findAllWithPagination(criteria);
     }
 }

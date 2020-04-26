@@ -1,5 +1,6 @@
 package net.gentledot.springcodeproject.repository.board;
 
+import net.gentledot.springcodeproject.model.PageCriteria;
 import net.gentledot.springcodeproject.model.board.Board;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -104,8 +105,21 @@ class BoardMapperTest {
     @Test
     @DisplayName("게시물 페이징 처리 테스트")
     void findAllWithPaginationTest(){
-        int page = 3;
-        List<Board> boardList = boardMapper.findAllWithPagination(page);
+        PageCriteria criteria = new PageCriteria(2, 20);
+        List<Board> boardList = boardMapper.findAllWithPagination(criteria);
+
+        assertThat(boardList.size(), is(20));
+
+        for (Board item : boardList){
+            log.debug("조회된 board 확인 : {}", item);
+        }
+    }
+
+    @Test
+    @DisplayName("게시물 페이징 처리 시 처리 기준이 null인 경우의 테스트")
+    void findAllWithPaginationTestWithNullCriteria(){
+        PageCriteria criteria = new PageCriteria(null, null);
+        List<Board> boardList = boardMapper.findAllWithPagination(criteria);
 
         assertThat(boardList.size(), is(10));
 
@@ -113,4 +127,5 @@ class BoardMapperTest {
             log.debug("조회된 board 확인 : {}", item);
         }
     }
+
 }
