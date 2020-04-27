@@ -2,13 +2,16 @@ package net.gentledot.springcodeproject.services.board;
 
 import net.gentledot.springcodeproject.errors.TargetNotFoundException;
 import net.gentledot.springcodeproject.errors.TransactionFailException;
-import net.gentledot.springcodeproject.model.board.PageCriteria;
 import net.gentledot.springcodeproject.model.board.Board;
+import net.gentledot.springcodeproject.model.board.PageCriteria;
+import net.gentledot.springcodeproject.model.board.PageMaker;
 import net.gentledot.springcodeproject.repository.board.BoardMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -57,8 +60,18 @@ public class BoardServiceImpl implements BoardService {
         return boardMapper.findAll();
     }
 
+    /*
+    * list = PageCriteria에서 설정한 page, page 내 보여줄 data를 기준으로 List<Board>가 담김
+    * pageMaker = Paging 처리를 위한 객체가 담김 (totalCount, startPage, endPage, prev, next, displayPageNum)
+    */
     @Override
-    public List<Board> listAllWithPagination(PageCriteria criteria) {
-        return boardMapper.findAllWithPagination(criteria);
+    public Map<String, Object> listAllWithPagination(PageCriteria criteria) {
+        HashMap<String, Object> resultMap = new HashMap<>();
+        PageMaker pageMaker = new PageMaker(criteria, boardMapper.countPaging());
+
+        resultMap.put("list", boardMapper.findAllWithPagination(criteria));
+        resultMap.put("pageMaker", pageMaker);
+
+        return resultMap;
     }
 }

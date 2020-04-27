@@ -4,6 +4,7 @@ import net.gentledot.springcodeproject.model.board.PageCriteria;
 import net.gentledot.springcodeproject.model.board.Board;
 
 import java.util.List;
+import java.util.Map;
 
 public interface BoardService {
     void regist(Board board);
@@ -11,5 +12,5 @@ public interface BoardService {
     void modify(Board board);
     void remove(Long bno);
     List<Board> listAll();
-    List<Board> listAllWithPagination(PageCriteria criteria);
+    Map<String, Object> listAllWithPagination(PageCriteria criteria);
 }
