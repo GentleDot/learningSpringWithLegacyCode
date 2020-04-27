@@ -4,26 +4,26 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class PageCriteria {
-    private int page;
-    private int perPageNum;
+    private long page;
+    private long perPageNum;
 
-    public PageCriteria(Integer page, Integer perPageNum) {
-        page = ObjectUtils.defaultIfNull(page, 1);
-        perPageNum = ObjectUtils.defaultIfNull(perPageNum, 10);
+    public PageCriteria(Long page, Long perPageNum) {
+        page = ObjectUtils.defaultIfNull(page, 1L);
+        perPageNum = ObjectUtils.defaultIfNull(perPageNum, 10L);
 
         this.page = Math.max(page, 1);
         this.perPageNum = perPageNum < 10 || perPageNum > 100 ? 10 : perPageNum;
     }
 
-    public int getPage() {
+    public long getPage() {
         return page;
     }
 
-    public int getPerPageNum() {
+    public long getPerPageNum() {
         return perPageNum;
     }
 
-    public int getPageStart() {
+    public long getPageStart() {
         return (page - 1) * perPageNum;
     }
 

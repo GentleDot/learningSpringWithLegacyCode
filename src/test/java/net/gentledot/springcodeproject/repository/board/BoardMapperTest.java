@@ -105,7 +105,7 @@ class BoardMapperTest {
     @Test
     @DisplayName("게시물 페이징 처리 테스트")
     void findAllWithPaginationTest(){
-        PageCriteria criteria = new PageCriteria(2, 20);
+        PageCriteria criteria = new PageCriteria(2L, 20L);
         List<Board> boardList = boardMapper.findAllWithPagination(criteria);
 
         assertThat(boardList.size(), is(20));
@@ -126,6 +126,13 @@ class BoardMapperTest {
         for (Board item : boardList){
             log.debug("조회된 board 확인 : {}", item);
         }
+    }
+
+    @Test
+    @DisplayName("게시물 전체 수 확인 테스트")
+    void countAllBoardTest(){
+        Long count = boardMapper.countPaging();
+        log.debug("총 데이터 수 : {}", count);
     }
 
 }

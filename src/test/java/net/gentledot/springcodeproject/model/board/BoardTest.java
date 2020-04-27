@@ -68,8 +68,8 @@ class BoardTest {
         // page = 3인 경우 : totalCount=122,startPage=1,endPage=10,prev=false,next=true,displayPageNum=10
         // page = 10인 경우 : totalCount=122,startPage=1,endPage=10,prev=false,next=true,displayPageNum=10
         // page가 11인 경우 : totalCount=122,startPage=11,endPage=13,prev=true,next=false,displayPageNum=10
-        PageCriteria pageCriteria = new PageCriteria(11, 10);
-        PageMaker pageMaker = new PageMaker(pageCriteria, 122);
+        PageCriteria pageCriteria = new PageCriteria(11L, 10L);
+        PageMaker pageMaker = new PageMaker(pageCriteria, 122L);
 
         log.debug("생성된 페이지 처리용 클래스 : {}", pageMaker);
     }

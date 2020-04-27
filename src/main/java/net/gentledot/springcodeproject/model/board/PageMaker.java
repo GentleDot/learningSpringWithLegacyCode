@@ -2,38 +2,40 @@ package net.gentledot.springcodeproject.model.board;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class PageMaker {
-    private int totalCount;
-    private int startPage;
-    private int endPage;
+    private long totalCount;
+    private long startPage;
+    private long endPage;
     private boolean prev;
     private boolean next;
-    private int displayPageNum;
+    private long displayPageNum;
     private PageCriteria criteria;
 
-    public PageMaker(PageCriteria criteria, Integer totalCount) {
+    public PageMaker(PageCriteria criteria, Long totalCount) {
         checkNotNull(criteria, "페이징 설정 기준은 null이 될 수 없습니다.");
         checkArgument(totalCount != null && totalCount >= 1, "총 데이터의 수는 필수이며 음수가 될 수 없습니다.");
 
         this.criteria = criteria;
         this.totalCount = totalCount;
-        displayPageNum = ObjectUtils.defaultIfNull(criteria.getPerPageNum(), 10);
+        displayPageNum = ObjectUtils.defaultIfNull(criteria.getPerPageNum(), 10L);
         calcData();
     }
 
-    public int getTotalCount() {
+    public Long getTotalCount() {
         return totalCount;
     }
 
-    public int getStartPage() {
+    public Long getStartPage() {
         return startPage;
     }
 
-    public int getEndPage() {
+    public Long getEndPage() {
         return endPage;
     }
 
@@ -45,8 +47,21 @@ public class PageMaker {
         return next;
     }
 
-    public int getDisplayPageNum() {
+    public Long getDisplayPageNum() {
         return displayPageNum;
+    }
+
+    public PageCriteria getCriteria() {
+        return criteria;
+    }
+
+    public String makeQuery(Long page) {
+        UriComponents uri = UriComponentsBuilder.newInstance()
+                .queryParam("page", page)
+                .queryParam("perPageNum", displayPageNum)
+                .build();
+
+        return uri.toUriString();
     }
 
     @Override
@@ -64,17 +79,17 @@ public class PageMaker {
     private void calcData() {
         // 현재 페이지를 기준으로 마지막 페이지 번호 계산
         // (현재 페이지 번호 / 페이지 번호의 수) * 보여지는 페이지 번호 수
-        endPage = (int) (Math.ceil(criteria.getPage() / (double) displayPageNum)
+        endPage = (long) (Math.ceil(criteria.getPage() / (double) displayPageNum)
                 * displayPageNum);
 
         // (마지막 페이지 번호 - 보여지는 페이지 번호 수) + 1
         startPage = (endPage - displayPageNum) + 1;
 
         // 데이터 수를 기준으로 마지막 페이지 번호 계산
-        int tempEndPage = (int) Math.ceil(totalCount / (double) displayPageNum);
+        long tempEndPage = (long) (Math.ceil(totalCount / (double) displayPageNum));
 
         // 보여져야 할 번호 수에 필요한 데이터보다 총 데이터 수가 모자르다면 마지막 페이지 번호를 조정
-        if (endPage > tempEndPage){
+        if (endPage > tempEndPage) {
             endPage = tempEndPage;
         }
 

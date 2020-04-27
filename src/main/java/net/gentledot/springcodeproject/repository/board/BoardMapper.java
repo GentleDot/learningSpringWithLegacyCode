@@ -37,4 +37,7 @@ public interface BoardMapper {
             "FROM tbl_board WHERE bno > 0 ORDER BY bno DESC, regdate DESC LIMIT #{pageStart}, #{perPageNum}")
     List<Board> findAllWithPagination(PageCriteria criteria);
 
+    @Select("select count(1) from tbl_board")
+    Long countPaging();
+
 }
