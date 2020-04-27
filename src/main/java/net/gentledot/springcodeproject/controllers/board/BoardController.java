@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/board/*")
@@ -55,7 +56,18 @@ public class BoardController {
     public void listAllBoardWithPagination(PageCriteria criteria, Model model) {
         log.info("페이징 기준이 설정된 게시물 리스트 조회");
 
-        model.addAttribute("list", boardService.listAllWithPagination(criteria));
+        model.addAttribute("list",
+                boardService.listAllWithPagination(criteria).get("list"));
+    }
+
+    @GetMapping(value = "/listPage")
+    public void listAllBoardWithPaginationAndPageIndicator(PageCriteria criteria, Model model) {
+        log.info("페이징 기준이 설정된 게시물 리스트 조회");
+
+        Map<String, Object> dataMap = boardService.listAllWithPagination(criteria);
+        model.addAttribute("list", dataMap.get("list"));
+        model.addAttribute("pageMaker", dataMap.get("pageMaker"));
+
     }
 
     @GetMapping(value = "/read")
