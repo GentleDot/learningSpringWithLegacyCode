@@ -134,3 +134,9 @@
     - [log_warn] myBatisSystemExceptionHandler() : MyBatis 기능 동작에서 예외가 발생한 경우
     - [log_warn] nullPointerExceptionHandler() : null을 참조할 때 발생하는 예외
     - [log_error] unexpectedExceptionHandler() : 예상하지 못한 예외가 발생한 경우
+
+### 페이징 처리
+- boardMapper 내 요청한 수의 게시물 list를 조회할 수 있는 기능 추가
+- boardService 내 게시물 list 및 pagination 구성에 필요한 정보를 담은 Map을 반환하는 method 구성
+- boardController 내 페이징 처리에 필요한 criteria, pageMaker를 사용한 method 추가
+- 목록 및 페이지 정보를 유지할 수 있도록 수정된 listPage, readPage, modifyPage view 추가

@@ -75,6 +75,13 @@ public class BoardController {
         model.addAttribute(boardService.read(boardNo));
     }
 
+    @GetMapping(value = "/readPage")
+    public void readBoardWithPageInfo(@RequestParam("bno") Long boardNo,
+                                      @ModelAttribute("criteria") PageCriteria criteria,
+                                      Model model) {
+        model.addAttribute(boardService.read(boardNo));
+    }
+
     @DeleteMapping(value = "/remove")
     public String removeBoard(@RequestParam("bno") Long boardNo, RedirectAttributes redirectAttr) {
         boardService.remove(boardNo);
@@ -83,19 +90,54 @@ public class BoardController {
         return "redirect:/board/listAll";
     }
 
+    @DeleteMapping(value = "/removePage")
+    public String removeBoardWithPageInfo(@RequestParam("bno") Long boardNo,
+                                          PageCriteria criteria,
+                                          RedirectAttributes redirectAttr) {
+        boardService.remove(boardNo);
+
+        redirectAttr.addAttribute("page", criteria.getPage());
+        redirectAttr.addAttribute("perPageNum", criteria.getPerPageNum());
+        redirectAttr.addFlashAttribute("result", SUCCESS_FLAG);
+
+        return "redirect:/board/listPage";
+    }
+
     @GetMapping(value = "/modify")
     public void boardModifierView(@RequestParam("bno") Long boardNo, Model model) {
         model.addAttribute(boardService.read(boardNo));
     }
 
+    @GetMapping(value = "/modifyPage")
+    public void boardModifierViewWithPageInfo(@RequestParam("bno") Long boardNo,
+                                              @ModelAttribute("criteria") PageCriteria criteria,
+                                              Model model) {
+        model.addAttribute(boardService.read(boardNo));
+    }
+
     @PutMapping(value = "/modify")
-    public String modifyBoard(Board board, RedirectAttributes redirectAttributes) {
+    public String modifyBoard(Board board, RedirectAttributes redirectAttr) {
         log.info("포스트 수정...");
 
         boardService.modify(board);
-        redirectAttributes.addFlashAttribute("result", SUCCESS_FLAG);
+        redirectAttr.addFlashAttribute("result", SUCCESS_FLAG);
 
         return "redirect:/board/listAll";
+    }
+
+    @PutMapping(value = "/modifyPage")
+    public String modifyBoardWithPageInfo(Board board,
+                                          PageCriteria criteria,
+                                          RedirectAttributes redirectAttr) {
+        log.info("포스트 수정...");
+
+        boardService.modify(board);
+
+        redirectAttr.addAttribute("page", criteria.getPage());
+        redirectAttr.addAttribute("perPageNum", criteria.getPerPageNum());
+        redirectAttr.addFlashAttribute("result", SUCCESS_FLAG);
+
+        return "redirect:/board/listPage";
     }
 
 
