@@ -2,7 +2,7 @@ package net.gentledot.springcodeproject.services.board;
 
 import net.gentledot.springcodeproject.errors.TargetNotFoundException;
 import net.gentledot.springcodeproject.errors.TransactionFailException;
-import net.gentledot.springcodeproject.model.PageCriteria;
+import net.gentledot.springcodeproject.model.board.PageCriteria;
 import net.gentledot.springcodeproject.model.board.Board;
 import net.gentledot.springcodeproject.repository.board.BoardMapper;
 import org.springframework.stereotype.Service;

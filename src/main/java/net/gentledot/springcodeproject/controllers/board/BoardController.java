@@ -1,6 +1,6 @@
 package net.gentledot.springcodeproject.controllers.board;
 
-import net.gentledot.springcodeproject.model.PageCriteria;
+import net.gentledot.springcodeproject.model.board.PageCriteria;
 import net.gentledot.springcodeproject.model.board.Board;
 import net.gentledot.springcodeproject.services.board.BoardService;
 import org.slf4j.Logger;

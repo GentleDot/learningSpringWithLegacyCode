@@ -1,6 +1,6 @@
 package net.gentledot.springcodeproject.repository.board;
 
-import net.gentledot.springcodeproject.model.PageCriteria;
+import net.gentledot.springcodeproject.model.board.PageCriteria;
 import net.gentledot.springcodeproject.model.board.Board;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

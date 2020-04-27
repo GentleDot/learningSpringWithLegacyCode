@@ -1,6 +1,5 @@
 package net.gentledot.springcodeproject.controllers.board;
 
-import net.gentledot.springcodeproject.model.PageCriteria;
 import net.gentledot.springcodeproject.model.board.Board;
 import net.gentledot.springcodeproject.services.board.BoardService;
 import org.junit.jupiter.api.DisplayName;
@@ -146,7 +145,7 @@ class BoardControllerTest {
         ResultActions perform = mockMvc.perform(get("/board/listCri"));
         perform.andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(model().attributeExists("pageCriteria")) // net.gentledot.springcodeproject.model.PageCriteria@65b7f80f[page=1,perPageNum=10]
+                .andExpect(model().attributeExists("pageCriteria")) // net.gentledot.springcodeproject.model.board.PageCriteria@65b7f80f[page=1,perPageNum=10]
                 .andExpect(view().name("board/listCri"));
     }
 }

@@ -1,4 +1,4 @@
-package net.gentledot.springcodeproject.model;
+package net.gentledot.springcodeproject.model.board;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;

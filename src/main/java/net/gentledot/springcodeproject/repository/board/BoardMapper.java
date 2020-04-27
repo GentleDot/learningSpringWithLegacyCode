@@ -1,6 +1,6 @@
 package net.gentledot.springcodeproject.repository.board;
 
-import net.gentledot.springcodeproject.model.PageCriteria;
+import net.gentledot.springcodeproject.model.board.PageCriteria;
 import net.gentledot.springcodeproject.model.board.Board;
 import org.apache.ibatis.annotations.*;
 
@@ -34,7 +34,7 @@ public interface BoardMapper {
     List<Board> findAll();
 
     @Select("SELECT bno, title, content, writer, regdate, viewcnt " +
-            "FROM tbl_board WHERE bno > 0 ORDER BY bno DESC, regdate DESC LIMIT #{pageStart}, #{perPageNum};")
+            "FROM tbl_board WHERE bno > 0 ORDER BY bno DESC, regdate DESC LIMIT #{pageStart}, #{perPageNum}")
     List<Board> findAllWithPagination(PageCriteria criteria);
 
 }

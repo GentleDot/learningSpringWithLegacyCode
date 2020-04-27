@@ -1,6 +1,6 @@
 package net.gentledot.springcodeproject.services.board;
 
-import net.gentledot.springcodeproject.model.PageCriteria;
+import net.gentledot.springcodeproject.model.board.PageCriteria;
 import net.gentledot.springcodeproject.model.board.Board;
 
 import java.util.List;
