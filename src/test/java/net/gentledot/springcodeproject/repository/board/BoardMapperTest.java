@@ -2,6 +2,7 @@ package net.gentledot.springcodeproject.repository.board;
 
 import net.gentledot.springcodeproject.model.board.PageCriteria;
 import net.gentledot.springcodeproject.model.board.Board;
+import net.gentledot.springcodeproject.model.board.PageSearchCriteria;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
@@ -133,6 +134,29 @@ class BoardMapperTest {
     void countAllBoardTest(){
         Long count = boardMapper.countPaging();
         log.debug("총 데이터 수 : {}", count);
+    }
+
+    @Test
+    @DisplayName("키워드 검색을 통한 게시물 리스트 조회 테스트")
+    void findAllByKeywordTest(){
+        PageSearchCriteria criteria = new PageSearchCriteria(3L, 10L, "tcw", "99");
+
+        List<Board> boardList = boardMapper.findAllByKeyword(criteria);
+
+        for (Board item : boardList){
+            log.debug("조회된 board : {}", item);
+        }
+
+    }
+
+    @Test
+    @DisplayName("키워드 검색을 통한 게시물 리스트 조회 시 개수 카운트 테스트")
+    void countBoardListSearchTest(){
+        PageSearchCriteria criteria = new PageSearchCriteria(1L, 10L, "tcw", "1000000");
+
+        Long countResult = boardMapper.countBoardListSearch(criteria);
+
+        log.debug("boardList 개수 확인 : {}", countResult);
     }
 
 }
