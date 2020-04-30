@@ -140,3 +140,9 @@
 - boardService 내 게시물 list 및 pagination 구성에 필요한 정보를 담은 Map을 반환하는 method 구성
 - boardController 내 페이징 처리에 필요한 criteria, pageMaker를 사용한 method 추가
 - 목록 및 페이지 정보를 유지할 수 있도록 수정된 listPage, readPage, modifyPage view 추가
+
+### 검색 처리
+- keyword와 searchType이 추가된 criteria 생성 : PageSearchCriteria.class
+- boardMapper 내 searchType에 따른 동적 쿼리 구성 : @SelectProvider와 BoardSqlProvider.class
+- 검색 기능 처리를 위한 service, controller, view 구성
+    - PageSearchCriteria 사용, keyword와 searchType 속성 추가 등
