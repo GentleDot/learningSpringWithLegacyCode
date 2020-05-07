@@ -41,7 +41,6 @@ public interface BoardMapper {
     @Select("select count(1) from tbl_board")
     Long countPaging();
 
-
 //    @SelectProvider(value = BoardSearchProvider.class, method = "listSearchWithStringSQL")
     @SelectProvider(value = BoardSqlProvider.class, method = "listSearch")
     List<Board> findAllByKeyword(PageSearchCriteria criteria);

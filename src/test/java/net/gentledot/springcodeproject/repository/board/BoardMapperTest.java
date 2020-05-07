@@ -3,6 +3,7 @@ package net.gentledot.springcodeproject.repository.board;
 import net.gentledot.springcodeproject.model.board.PageCriteria;
 import net.gentledot.springcodeproject.model.board.Board;
 import net.gentledot.springcodeproject.model.board.PageSearchCriteria;
+import net.gentledot.springcodeproject.repository.reply.ReplyMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
@@ -21,6 +22,9 @@ import static org.hamcrest.Matchers.notNullValue;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class BoardMapperTest {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
+    ReplyMapper replyMapper;
 
     @Autowired
     BoardMapper boardMapper;
@@ -90,6 +94,8 @@ class BoardMapperTest {
     @Test
     @DisplayName("게시물 1번 삭제 테스트")
     void deleteTest() {
+        // 참조키 설정된 댓글 삭제 후 게시물 처리 가능
+        replyMapper.delete(1L);
         Integer result = boardMapper.delete(1L);
         assertThat(result, is(1));
 

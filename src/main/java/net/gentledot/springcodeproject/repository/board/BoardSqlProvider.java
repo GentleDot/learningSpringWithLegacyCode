@@ -87,7 +87,7 @@ public class BoardSqlProvider {
         return query;
     }
 
-    public String listSearchCount(PageSearchCriteria criteria){
+    public String listSearchCount(PageSearchCriteria criteria) {
         SQL boardListCountSQL = new SQL()
                 .SELECT("count(bno)")
                 .FROM("tbl_board")
