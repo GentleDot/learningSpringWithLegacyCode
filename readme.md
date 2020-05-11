@@ -146,3 +146,25 @@
 - boardMapper 내 searchType에 따른 동적 쿼리 구성 : @SelectProvider와 BoardSqlProvider.class
 - 검색 기능 처리를 위한 service, controller, view 구성
     - PageSearchCriteria 사용, keyword와 searchType 속성 추가 등
+    
+    
+## Ajax 댓글 처리
+### 테이블 설정 및 Reply domain (entity) 객체 생성
+- table 생성 : tbl_reply
+- domain 객체 Reply.class 생성
+
+### ReplyMapper 구현
+- Transaction 기능 구현
+    - int save(Reply reply) : 댓글 저장
+    - Optional<Reply> findByRno(@Param("rno") Long replyNo) : 댓글 조회 (댓글번호 기준)
+    - List<Reply> findAllByBno(@Param("bno") Long boardNo) : 댓글 목록 조회 (게시물번호 기준)
+    - update(Reply reply) : 댓글 수정
+    - delete(@Param("rno") Long replyNo) : 댓글 삭제
+
+### ReplyService 구현
+- Mapper를 통한 댓글 기능 설정
+    - int register(Reply reply) : 댓글 저장
+    - Reply findByRno(Long rno) : 댓글 조회
+    - int modify(Reply reply) : 댓글 수정
+    - int remove(Long rno) : 댓글 삭제
+    - List<Reply> findAllByBno(Long bno) : 게시물의 댓글 목록 조회
