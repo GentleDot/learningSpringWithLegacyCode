@@ -5,6 +5,7 @@ import net.gentledot.springcodeproject.repository.reply.ReplyMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,10 +19,10 @@ public class ReplyServiceImpl implements ReplyService{
         this.replyMapper = replyMapper;
     }
 
+    @Transactional
     @Override
     public int register(Reply reply) {
         log.debug("댓글 등록......");
-
         return replyMapper.save(reply);
     }
 
@@ -31,12 +32,21 @@ public class ReplyServiceImpl implements ReplyService{
         return replyMapper.findByRno(rno).orElseThrow(() -> new RuntimeException("해당되는 댓글이 존재하지 않습니다."));
     }
 
+    @Transactional
     @Override
-    public int modify(Reply reply) {
+    public int modify(Long rno, Reply reply) {
         log.debug("댓글 수정......");
-        return replyMapper.update(reply);
+        Reply target = replyMapper.findByRno(rno).orElseThrow(() -> new RuntimeException("해당되는 댓글이 존재하지 않습니다."));
+
+        Reply modifiedReply = new Reply.Builder(target)
+                .replyer(reply.getReplyer())
+                .replytext(reply.getReplytext())
+                .build();
+
+        return replyMapper.update(modifiedReply);
     }
 
+    @Transactional
     @Override
     public int remove(Long rno) {
         log.debug("댓글 삭제......");

@@ -168,3 +168,11 @@
     - int modify(Reply reply) : 댓글 수정
     - int remove(Long rno) : 댓글 삭제
     - List<Reply> findAllByBno(Long bno) : 게시물의 댓글 목록 조회
+    
+    
+### ReplyController 구현
+- 댓글 기능 요청 처리
+    - 댓글 생성 요청 : POST /replies/new
+    - 게시물 내 댓글 목록 조회 요청 : GET /replies/board/{bno}
+    - 댓글 수정 요청 : PUT /replies/{rno}
+    - 댓글 삭제 요청 : DELETE /replies/{rno}

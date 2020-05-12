@@ -1,5 +1,7 @@
 package net.gentledot.springcodeproject.model.reply;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -18,6 +20,9 @@ public class Reply {
     private String replyer;
     private LocalDateTime regdate;
     private LocalDateTime updatedate;
+
+    protected Reply() {
+    }
 
     public Reply(Long rno, Long bno, String replytext, String replyer, LocalDateTime regdate, LocalDateTime updatedate) {
         checkArgument(StringUtils.isNotBlank(replytext), "댓글내용은 빈 값이 될 수 없습니다.");
@@ -49,10 +54,12 @@ public class Reply {
         return replyer;
     }
 
+    @JsonSerialize(using = ToStringSerializer.class)
     public LocalDateTime getRegdate() {
         return regdate;
     }
 
+    @JsonSerialize(using = ToStringSerializer.class)
     public LocalDateTime getUpdatedate() {
         return updatedate;
     }
@@ -119,7 +126,7 @@ public class Reply {
         }
 
         public Builder replyer(String replyer) {
-            if (StringUtils.isBlank(this.replyer)){
+            if (StringUtils.isBlank(this.replyer)) {
                 this.replyer = replyer;
             }
             return this;

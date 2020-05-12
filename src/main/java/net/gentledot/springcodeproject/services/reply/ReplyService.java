@@ -9,7 +9,7 @@ public interface ReplyService {
 
     Reply findByRno(Long rno);
 
-    int modify(Reply reply);
+    int modify(Long rno, Reply reply);
 
     int remove(Long rno);
 
