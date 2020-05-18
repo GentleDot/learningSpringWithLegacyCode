@@ -9,7 +9,7 @@ import java.util.Optional;
 @Mapper
 public interface ReplyMapper {
     @Insert("insert into tbl_reply (bno, replytext, replyer, regdate)\n" +
-            "values (#{bno}, #{replytext}, #{replyer}, #{regdate})")
+            "values (#{bno}, #{replytext}, #{replyer}, now())")
     int save(Reply reply);
 
     @Select("SELECT rno, bno, replytext, replyer, regdate, updatedate\n" +
