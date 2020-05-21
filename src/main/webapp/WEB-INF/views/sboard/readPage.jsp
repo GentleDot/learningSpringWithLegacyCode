@@ -207,7 +207,7 @@
                     printReplyList();
                 }
 
-            })
+            });
         });
 
         $("#replyModBtn").on("click", function () {
@@ -216,19 +216,19 @@
             let replytext = $("#replytext").val();
 
             let reply = {
-                bno : boardNo,
-                rno : replyNo,
-                replyer : replyer,
-                replytext : replytext
+                bno: boardNo,
+                rno: replyNo,
+                replyer: replyer,
+                replytext: replytext
             };
 
-            service.update(reply, function(result){
+            service.update(reply, function (result) {
                 console.log("update 결과 : " + result);
                 if (result) {
                     $("#modifyModal").modal('toggle');
                     printReplyList();
                 }
-            })
+            });
 
         });
 

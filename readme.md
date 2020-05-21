@@ -170,9 +170,15 @@
     - List<Reply> findAllByBno(Long bno) : 게시물의 댓글 목록 조회
     
     
-### ReplyController 구현
+### ReplyController 구현 및 view 구성
 - 댓글 기능 요청 처리
     - 댓글 생성 요청 : POST /replies/new
     - 게시물 내 댓글 목록 조회 요청 : GET /replies/board/{bno}
     - 댓글 수정 요청 : PUT /replies/{rno}
     - 댓글 삭제 요청 : DELETE /replies/{rno}
+
+- view에서의 댓글 기능 처리 (Ajax 활용)
+    - 댓글 기능은 class 형식으로 function을 구현
+    - $.ajax, $.getJSON 을 사용하여 서버에 비동기적으로 request
+    - JSON.stringify()를 통해 JSON 형식으로 전송
+    - callback function에서 응답 결과를 처리
