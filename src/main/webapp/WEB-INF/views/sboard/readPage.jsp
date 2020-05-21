@@ -86,15 +86,15 @@
             </div>
 
 
-            <!-- The time line -->
-            <ul class="timeline">
-                <!-- timeline time label -->
-                <li class="time-label" id="repliesDiv">
-		  <span class="bg-green">
-		    Replies List <small id='replycntSmall'> [ ${boardVO.replycnt} ] </small>
-		    </span>
-                </li>
-            </ul>
+            <!-- timeline time label -->
+            <div class="time-label" id="repliesDiv">
+                <span class="bg-green"> 댓글 <small id='replycntSmall'> [] </small> </span>
+
+                <!-- The time line -->
+                <ul class="timeline">
+
+                </ul>
+            </div>
 
             <div class='text-center'>
                 <ul id="pagination" class="pagination pagination-sm no-margin ">
@@ -115,9 +115,10 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title"></h4>
+                    <h4 class="modal-title">댓글 수정, 삭제</h4>
                 </div>
-                <div class="modal-body" data-rno>
+                <div class="modal-body" data-rno="" data-replyer="">
+                    <label for="replytext">댓글 : </label>
                     <p><input type="text" id="replytext" class="form-control"></p>
                 </div>
                 <div class="modal-footer">
@@ -136,6 +137,9 @@
 <script type="text/javascript" src="/resources/dist/js/reply.js"></script>
 
 <script>
+    var service = new ReplyService();
+    var boardNo = ${board.bno};
+
 
     $(document).ready(function () {
 
@@ -143,6 +147,8 @@
         var httpMethod = $("#requestMethod");
 
         console.log(formObj);
+
+        printReplyList();
 
         $("#boardBtnMod").on("click", function () {
             formObj.attr("action", "/sboard/modifyPage");
@@ -163,26 +169,96 @@
             formObj.submit();
         });
 
-        console.log("=======================");
-        console.log("reply.js 호출 테스트");
-
-
-        <%--let bnoValue = '<c:out value="${board.bno}"/>';--%>
-        let service = new ReplyService();
-
         $("#replyAddBtn").on("click", function () {
-            var reply = {
+            let reply = {
                 replytext: document.getElementById("newReplyText").value,
                 replyer: document.getElementById("newReplyWriter").value,
-                bno: ${board.bno}
+                bno: boardNo
             };
 
             service.add(reply,
                 function (result) {
-                    console.log("result : " + result);
-                    alert("test complete.");
+                    console.log("add result : " + result);
+                    /*document.getElementById("newReplyWriter").value = "";
+                    document.getElementById("newReplyText").value = "";*/
+                    $("#newReplyWriter").val("");
+                    $("#newReplyText").val("");
+                    printReplyList();
                 });
-        })
+        });
+
+        $(".timeline").on("click", ".replyLi", function () {
+            let reply = $(this);
+
+            $(".modal-title").html("No : " + reply.attr("data-rno") + ", writer : " + reply.attr("data-replyer"));
+            $("#replytext").val(reply.find('.timeline-body').text());
+            $(".modal-body").attr("data-rno", reply.attr("data-rno"))
+                .attr("data-replyer", reply.attr("data-replyer"));
+        });
+
+        $("#replyDelBtn").on("click", function () {
+            let rno = $(".modal-body").attr("data-rno");
+
+            service.remove(rno, function (result) {
+                console.log("remove 결과 : " + result);
+                if (result) {
+                    // $("#modifyModal").css({'display' : 'none'});
+                    $("#modifyModal").modal('toggle');
+                    printReplyList();
+                }
+
+            })
+        });
+
+        $("#replyModBtn").on("click", function () {
+            let replyNo = $(".modal-body").attr("data-rno");
+            let replyer = $(".modal-body").attr("data-replyer");
+            let replytext = $("#replytext").val();
+
+            let reply = {
+                bno : boardNo,
+                rno : replyNo,
+                replyer : replyer,
+                replytext : replytext
+            };
+
+            service.update(reply, function(result){
+                console.log("update 결과 : " + result);
+                if (result) {
+                    $("#modifyModal").modal('toggle');
+                    printReplyList();
+                }
+            })
+
+        });
+
+        function printReplyList() {
+            service.getList(boardNo, function (list) {
+                let length = list.length || 0;
+                console.log("댓글 수 : " + length);
+                console.log("list_index 0 확인 : " + JSON.stringify(list[0]));
+
+
+                $("#replycntSmall").html("[ " + length + " ]");
+                let replyLi = "";
+
+                $(list).each(function () {
+                    replyLi += "<li class=\"replyLi\" data-rno=\"" + this.rno + "\" data-replyer=\"" + this.replyer + "\">\n" +
+                        "    <i class=\"fa fa-comments bg-blue\"></i>\n" +
+                        "    <div class=\"timeline-item\">\n" +
+                        "        <span class=\"time\"><i class=\"fa fa-clock-o\"></i> " + this.regdate + "</span>\n" +
+                        "        <h3 class=\"timeline-header\"><strong> &lt" + this.rno + "&gt " + this.replyer + "</strong></h3>\n" +
+                        "        <div class=\"timeline-body\"> " + this.replytext + "</div>\n" +
+                        "        <div class=\"timeline-footer\">\n" +
+                        "            <a class=\"btn btn-primary btn-xs\" data-toggle=\"modal\" data-target=\"#modifyModal\">수정</a>\n" +
+                        "        </div>\n" +
+                        "    </div>\n" +
+                        "</li>";
+                });
+
+                $(".timeline").html(replyLi);
+            });
+        }
 
     });
 
