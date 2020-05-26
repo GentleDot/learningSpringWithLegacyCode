@@ -10,6 +10,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.UUID;
 
 @Controller
 public class UploadController {
@@ -49,6 +51,17 @@ public class UploadController {
     public void uploadAjaxPost(MultipartFile[] uploadFile) {
         log.info("ajax 업로드 방식 ......");
 
+        LocalDate now = LocalDate.now();
+        log.info("오늘 날짜 : {}", now);
+
+
+        String childPath = now.toString().replace("-", File.separator);
+        File uploadPath = new File(saveLocation, childPath);
+
+        if (!uploadPath.exists()) {
+            uploadPath.mkdirs();
+        }
+
         for (MultipartFile file : uploadFile) {
             log.info("======");
             log.info("upload file name : {}", file.getOriginalFilename());
@@ -60,7 +73,11 @@ public class UploadController {
             fileName = fileName.substring(fileName.lastIndexOf("\\") + 1);
 
             log.info("file name only : {}", fileName);
-            File saveFile = new File(saveLocation, fileName);
+
+            UUID uuid = UUID.randomUUID();
+            fileName = uuid.toString() + "_" + fileName;
+
+            File saveFile = new File(uploadPath, fileName);
 
             try {
                 file.transferTo(saveFile);

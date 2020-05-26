@@ -66,19 +66,6 @@
                     alert("Uploaded!");
                 }
             });
-
-            /*const request = new XMLHttpRequest();
-            request.open('POST', '/uploadAjaxAction', true);
-            request.onreadystatechange = function () {
-                if (request.readyState === 4) {
-                    if (request.status === 200){
-                        success();
-                    } else {
-
-                    }
-                }
-            };
-            request.send(null);*/
         });
     });
 
