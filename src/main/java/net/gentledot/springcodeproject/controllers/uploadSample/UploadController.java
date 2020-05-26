@@ -1,5 +1,6 @@
 package net.gentledot.springcodeproject.controllers.uploadSample;
 
+import net.coobird.thumbnailator.Thumbnailator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -9,7 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -77,13 +80,32 @@ public class UploadController {
             UUID uuid = UUID.randomUUID();
             fileName = uuid.toString() + "_" + fileName;
 
-            File saveFile = new File(uploadPath, fileName);
-
             try {
+                File saveFile = new File(uploadPath, fileName);
                 file.transferTo(saveFile);
+
+                if (checkImageType(saveFile)) {
+                    FileOutputStream outputStream = new FileOutputStream(new File(uploadPath, "s_" + fileName));
+                    Thumbnailator.createThumbnail(file.getInputStream(),
+                            outputStream, 100, 100);
+
+                    outputStream.close();
+                }
+
             } catch (IOException e) {
                 log.error("파일 저장에서 오류 발생", e);
             }
         }
+    }
+
+    private boolean checkImageType(File file) {
+        try {
+            String contentType = Files.probeContentType(file.toPath());
+            return contentType.startsWith("image");
+        } catch (IOException e) {
+            log.error("contentType 확인 중 오류! 파일을 찾을 수 없습니다.", e);
+        }
+
+        return false;
     }
 }

@@ -30,6 +30,7 @@ dependencies {
     implementation 'com.google.guava:guava:28.2-jre'
     implementation 'javax.inject:javax.inject:1'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.0'
+    implementation 'net.coobird:thumbnailator:0.4.11'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'mysql:mysql-connector-java'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
