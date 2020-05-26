@@ -60,7 +60,6 @@ public class UploadController {
             fileName = fileName.substring(fileName.lastIndexOf("\\") + 1);
 
             log.info("file name only : {}", fileName);
-
             File saveFile = new File(saveLocation, fileName);
 
             try {
