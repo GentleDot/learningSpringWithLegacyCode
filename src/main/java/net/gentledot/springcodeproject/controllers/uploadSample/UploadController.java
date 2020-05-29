@@ -1,8 +1,11 @@
 package net.gentledot.springcodeproject.controllers.uploadSample;
 
 import net.coobird.thumbnailator.Thumbnailator;
+import net.gentledot.springcodeproject.model.upload.AttachFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +17,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -51,8 +56,10 @@ public class UploadController {
     }
 
     @PostMapping("/uploadAjaxAction")
-    public void uploadAjaxPost(MultipartFile[] uploadFile) {
+    public ResponseEntity<List<AttachFile>> uploadAjaxPost(MultipartFile[] uploadFile) {
         log.info("ajax 업로드 방식 ......");
+
+        ArrayList<AttachFile> fileList = new ArrayList<>();
 
         LocalDate now = LocalDate.now();
         log.info("오늘 날짜 : {}", now);
@@ -78,24 +85,36 @@ public class UploadController {
             log.info("file name only : {}", fileName);
 
             UUID uuid = UUID.randomUUID();
-            fileName = uuid.toString() + "_" + fileName;
+            String uniqueFileName = uuid.toString() + "_" + fileName;
 
             try {
-                File saveFile = new File(uploadPath, fileName);
+                File saveFile = new File(uploadPath, uniqueFileName);
                 file.transferTo(saveFile);
 
+                AttachFile attachFile = new AttachFile.Builder()
+                        .fileName(fileName)
+                        .uuid(uuid.toString())
+                        .uploadPath(uploadPath.getPath())
+                        .build();
+
                 if (checkImageType(saveFile)) {
-                    FileOutputStream outputStream = new FileOutputStream(new File(uploadPath, "s_" + fileName));
+                    attachFile.setImage(true);
+
+                    FileOutputStream outputStream = new FileOutputStream(new File(uploadPath, "s_" + uniqueFileName));
                     Thumbnailator.createThumbnail(file.getInputStream(),
                             outputStream, 100, 100);
 
                     outputStream.close();
                 }
 
+                fileList.add(attachFile);
+
             } catch (IOException e) {
                 log.error("파일 저장에서 오류 발생", e);
             }
         }
+
+        return new ResponseEntity<>(fileList, HttpStatus.OK);
     }
 
     private boolean checkImageType(File file) {

@@ -61,6 +61,7 @@
                 contentType: false,
                 data: formData,
                 type: 'POST',
+                dataType: 'JSON',
                 success: result => {
                     console.log(result);
                     alert("Uploaded!");
