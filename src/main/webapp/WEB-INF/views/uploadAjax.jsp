@@ -64,6 +64,7 @@
                 dataType: 'JSON',
                 success: result => {
                     console.log(result);
+                    inputFiles.value = '';
                     alert("Uploaded!");
                 }
             });
