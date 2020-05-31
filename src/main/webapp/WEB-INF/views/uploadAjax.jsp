@@ -8,11 +8,48 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>upload with Ajax example</title>
+    <style>
+        .uploadResult {
+            width: 100%;
+            background-color: #a0a0a0;
+        }
+
+        .uploadResult ul {
+            line-height: 2em;
+            display: flex;
+            flex-flow: row;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .uploadResult ul li {
+            list-style: none;
+            padding: 0 10px;
+        }
+
+        .uploadResult ul li img {
+            width: 4em;
+            height: auto;
+            vertical-align: middle;
+        }
+
+        .uploadResult ul li img.fileIcon {
+            width: 20px;
+            margin: 2px 5px;
+            vertical-align: text-top;
+        }
+    </style>
 </head>
 <body>
 <div class="uploadDiv">
     <input type="file" name="uploadFile" multiple>
     <button type="button" id="uploadBtn">업로드!</button>
+</div>
+
+<div class="uploadResult">
+    <ul>
+
+    </ul>
 </div>
 </body>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"
@@ -34,6 +71,25 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+        var uploadResult = document.querySelector('.uploadResult ul');
+
+        function showUploadedFile(uploadResultArr) {
+            $(uploadResultArr).each(function (index, object) {
+                let li = document.createElement("li");
+                if (object.image) {
+                    let fileCallPath = encodeURIComponent(object.uploadPath +
+                        "/s_" + object.uuid +
+                        "_" + object.fileName);
+                    li.innerHTML = "<img src='/display?fileName=" + fileCallPath + "'/>";
+
+                } else {
+                    li.innerHTML = "<img class='fileIcon' src='/resources/dist/img/attach.png'/>" + object.fileName;
+                }
+
+                uploadResult.append(li);
+            });
+        }
+
         document.querySelector('#uploadBtn').addEventListener('click', event => {
             let formData = new FormData;
             let inputFiles = document.querySelector('input[name=uploadFile]');
@@ -64,6 +120,9 @@
                 dataType: 'JSON',
                 success: result => {
                     console.log(result);
+
+                    showUploadedFile(result);
+
                     inputFiles.value = '';
                     alert("Uploaded!");
                 }
