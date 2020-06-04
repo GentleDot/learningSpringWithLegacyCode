@@ -76,14 +76,14 @@
         function showUploadedFile(uploadResultArr) {
             $(uploadResultArr).each(function (index, object) {
                 let li = document.createElement("li");
+                let fileCallPath;
                 if (object.image) {
-                    let fileCallPath = encodeURIComponent(object.uploadPath +
-                        "/s_" + object.uuid +
-                        "_" + object.fileName);
+                    fileCallPath = encodeURIComponent(object.uploadPath + "/s_" + object.uuid + "_" + object.fileName);
                     li.innerHTML = "<img src='/display?fileName=" + fileCallPath + "'/>";
 
                 } else {
-                    li.innerHTML = "<img class='fileIcon' src='/resources/dist/img/attach.png'/>" + object.fileName;
+                    fileCallPath = encodeURIComponent(object.uploadPath + "/" + object.uuid + "_" + object.fileName);
+                    li.innerHTML = "<a href='/download?fileName=" + fileCallPath + "'><img class='fileIcon' src='/resources/dist/img/attach.png'/>" + object.fileName + "</a>";
                 }
 
                 uploadResult.append(li);
