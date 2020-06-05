@@ -104,7 +104,7 @@ public class UploadController {
                 AttachFile attachFile = new AttachFile.Builder()
                         .fileName(fileName)
                         .uuid(uuid.toString())
-                        .uploadPath(childPath)
+                        .uploadPath(now.toString().replace("-", "/"))
                         .build();
 
                 if (checkImageType(saveFile)) {

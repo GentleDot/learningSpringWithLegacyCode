@@ -38,6 +38,29 @@
             margin: 2px 5px;
             vertical-align: text-top;
         }
+
+        .bigPictureWrapper {
+            display: none;
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            background: rgba(220, 220, 220, 0.5);
+            z-index: 100;
+        }
+
+        .bigPicture {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .bigPicture img {
+            width: 600px;
+        }
     </style>
 </head>
 <body>
@@ -50,6 +73,10 @@
     <ul>
 
     </ul>
+</div>
+
+<div class="bigPictureWrapper">
+    <div class="bigPicture"></div>
 </div>
 </body>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"
@@ -70,6 +97,22 @@
         return true;
     }
 
+    function showImage(filePath) {
+        console.log("이미지 경로 : " + filePath);
+        let bigWrapper = document.querySelector('.bigPictureWrapper');
+        let bigPicture = document.querySelector('.bigPictureWrapper .bigPicture');
+
+        // bigWrapper.css({display: 'flex'}).show();
+        bigWrapper.style.display = "flex";
+        // bigWrapper.show();
+
+        // bigPicture.innerHTML("<img src='/display?filename=" + encodeURI(filePath) + "'/>")
+        let displayImage = document.createElement("img");
+        displayImage.setAttribute("src", "/display?fileName=" + filePath);
+        bigPicture.appendChild(displayImage);
+        bigPicture.animate([{width: '0', height: '0'}, {width: '100%', height: '100%'}], {duration: 1000});
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
         var uploadResult = document.querySelector('.uploadResult ul');
 
@@ -79,7 +122,9 @@
                 let fileCallPath;
                 if (object.image) {
                     fileCallPath = encodeURIComponent(object.uploadPath + "/s_" + object.uuid + "_" + object.fileName);
-                    li.innerHTML = "<img src='/display?fileName=" + fileCallPath + "'/>";
+                    // let uploadImagePath = object.uploadPath + "\\" + object.uuid + "_" + object.filename;
+                    let uploadImagePath = object.uploadPath + "/" + object.uuid + "_" + object.fileName;
+                    li.innerHTML = "<a href='javascript:showImage(\"" + uploadImagePath + "\")'><img src='/display?fileName=" + fileCallPath + "'/></a>";
 
                 } else {
                     fileCallPath = encodeURIComponent(object.uploadPath + "/" + object.uuid + "_" + object.fileName);
@@ -128,6 +173,16 @@
                 }
             });
         });
+
+        document.querySelector('.bigPictureWrapper').addEventListener("click", (event) => {
+            let bigPicture = document.querySelector('.bigPictureWrapper .bigPicture');
+            bigPicture.animate([{width: '100%', height: '100%'}, {width: '0', height: '0'}], {duration: 1000});
+            this.setTimeout(() => {
+                document.querySelector('.bigPictureWrapper').style.display = "none";
+                bigPicture.innerHTML = ""; // init
+            }, 500);
+
+        })
     });
 
 </script>
