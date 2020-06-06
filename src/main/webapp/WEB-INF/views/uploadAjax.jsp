@@ -39,6 +39,20 @@
             vertical-align: text-top;
         }
 
+        .uploadResult ul li span {
+            display: inline-block;
+            width: 1em;
+            line-height: 1em;
+            text-align: center;
+            vertical-align: top;
+            cursor: pointer;
+        }
+
+        .uploadResult ul li span:hover {
+            font-weight: bold;
+            color: darkred;
+        }
+
         .bigPictureWrapper {
             display: none;
             position: absolute;
@@ -141,11 +155,11 @@
                     },
                 });
                 responsePromise
-                    .then((data) => {
-                        console.log(data);
-                        console.log(data.text());
-                    })
-                    .catch(error => console.error(error));
+                    .then(data => data.text()).then(result => {
+                    if (result === "deleted") {
+                        this.parentNode.remove();
+                    }
+                }).catch(error => console.error(error));
             });
         });
     }
