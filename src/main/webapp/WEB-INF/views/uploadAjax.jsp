@@ -104,13 +104,50 @@
 
         // bigWrapper.css({display: 'flex'}).show();
         bigWrapper.style.display = "flex";
-        // bigWrapper.show();
 
-        // bigPicture.innerHTML("<img src='/display?filename=" + encodeURI(filePath) + "'/>")
+        // bigPicture.html("<img src='/display?filename=" + encodeURI(filePath) + "'/>")
         let displayImage = document.createElement("img");
         displayImage.setAttribute("src", "/display?fileName=" + filePath);
         bigPicture.appendChild(displayImage);
+        // bigPicture.animate({width: '100%', height: '100%'}, 1000);
         bigPicture.animate([{width: '0', height: '0'}, {width: '100%', height: '100%'}], {duration: 1000});
+    }
+
+    function setDeleteFunction() {
+        let uploadResultList = document.querySelector('.uploadResult ul').querySelectorAll('span');
+        uploadResultList.forEach(function (item) {
+            item.addEventListener('click', function (e) {
+                console.log("클릭했는데 반응이 없어?");
+                console.log("this는 뭐냐? " + this);
+                console.log("e.currentTarget은? " + e.currentTarget);
+                console.log("this와 e.currentTarget은 같다? " + e.currentTarget === this);
+
+                /*let targetFile = this.data("file");
+                let type = this.data("type");*/
+                let targetFile = this.dataset.file;
+                let type = this.dataset.type;
+
+                console.log("targetFile : " + targetFile + " / type : " + type);
+                let requestData = {
+                    fileName: targetFile,
+                    type: type
+                };
+
+                let responsePromise = fetch('/deleteFile', {
+                    body: JSON.stringify(requestData),
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+                responsePromise
+                    .then((data) => {
+                        console.log(data);
+                        console.log(data.text());
+                    })
+                    .catch(error => console.error(error));
+            });
+        });
     }
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -124,11 +161,13 @@
                     fileCallPath = encodeURIComponent(object.uploadPath + "/s_" + object.uuid + "_" + object.fileName);
                     // let uploadImagePath = object.uploadPath + "\\" + object.uuid + "_" + object.filename;
                     let uploadImagePath = object.uploadPath + "/" + object.uuid + "_" + object.fileName;
-                    li.innerHTML = "<a href='javascript:showImage(\"" + uploadImagePath + "\")'><img src='/display?fileName=" + fileCallPath + "'/></a>";
+                    li.innerHTML = "<a href='javascript:showImage(\"" + uploadImagePath + "\")'><img src='/display?fileName=" + fileCallPath + "'/></a>"
+                        + "<span data-file=\'" + fileCallPath + "' data-type='image'> x </span>";
 
                 } else {
                     fileCallPath = encodeURIComponent(object.uploadPath + "/" + object.uuid + "_" + object.fileName);
-                    li.innerHTML = "<a href='/download?fileName=" + fileCallPath + "'><img class='fileIcon' src='/resources/dist/img/attach.png'/>" + object.fileName + "</a>";
+                    li.innerHTML = "<a href='/download?fileName=" + fileCallPath + "'><img class='fileIcon' src='/resources/dist/img/attach.png'/>" + object.fileName + "</a>"
+                        + "<span data-file=\'" + fileCallPath + "' data-type='file'> x </span>";
                 }
 
                 uploadResult.append(li);
@@ -167,8 +206,9 @@
                     console.log(result);
 
                     showUploadedFile(result);
-
                     inputFiles.value = '';
+                    setDeleteFunction();
+
                     alert("Uploaded!");
                 }
             });
@@ -181,8 +221,7 @@
                 document.querySelector('.bigPictureWrapper').style.display = "none";
                 bigPicture.innerHTML = ""; // init
             }, 500);
-
-        })
+        });
     });
 
 </script>

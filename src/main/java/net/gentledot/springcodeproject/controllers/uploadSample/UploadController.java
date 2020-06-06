@@ -1,6 +1,7 @@
 package net.gentledot.springcodeproject.controllers.uploadSample;
 
 import net.coobird.thumbnailator.Thumbnailator;
+import net.gentledot.springcodeproject.model.request.FileRequest;
 import net.gentledot.springcodeproject.model.upload.AttachFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,10 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -163,7 +161,6 @@ public class UploadController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-
         String resourceName = resource.getFilename();
         String resouceOriginalName = resourceName.substring(resourceName.indexOf("_") + 1);
         HttpHeaders headers = new HttpHeaders();
@@ -187,6 +184,34 @@ public class UploadController {
         headers.add("Content-Disposition", "attachment; filename=" + downloadName);
 
         return new ResponseEntity<>(resource, headers, HttpStatus.OK);
+    }
+
+    @PostMapping("/deleteFile")
+    @ResponseBody
+    public ResponseEntity<String> deleteFile(@RequestBody FileRequest request) {
+        String fileName = request.getFileName();
+        String type = request.getType();
+        log.info("삭제 대상 파일 : {}", fileName);
+        String result = "deleted";
+
+        File file = new File(saveLocation + URLDecoder.decode(fileName, StandardCharsets.UTF_8));
+        boolean deleteResult = file.delete();
+
+        if (!deleteResult) {
+            result = "delete Failed";
+        }
+
+        if (type.equals("image")) {
+            String originalImage = file.getAbsolutePath().replace("s_", "");
+            log.info("원본 사진 : {}", originalImage);
+
+            deleteResult = new File(originalImage).delete();
+            if (!deleteResult) {
+                result = "delete Failed";
+            }
+        }
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     private boolean checkImageType(File file) {
