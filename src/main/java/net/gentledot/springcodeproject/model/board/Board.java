@@ -6,6 +6,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -16,6 +17,8 @@ public class Board {
     private String writer;
     private LocalDateTime regdate;
     private Long viewcnt;
+
+    private List<AttachFile> attachList;
 
     public Board(Long bno, String title, String content, String writer, LocalDateTime regdate, Long viewcnt) {
         viewcnt = ObjectUtils.defaultIfNull(viewcnt, 0L);

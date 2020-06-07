@@ -30,7 +30,7 @@
 - AOP의 개념과 설정
 - 트랜잭션 관리의 설정과 테스트
 
-### Part 5： 게사물의 첨부파일 가능
+### Part 5： 게시물의 첨부파일 가능
 
 - <form>을 이용하는 파일 업로드
 - Ajax를 이용하는 파일 업로드
@@ -182,3 +182,18 @@
     - $.ajax, $.getJSON 을 사용하여 서버에 비동기적으로 request
     - JSON.stringify()를 통해 JSON 형식으로 전송
     - callback function에서 응답 결과를 처리
+    
+    
+## 게시물의 첨부파일 가능
+### entity 생성 (+ 객체)
+- tbl_attach table 생성
+    - PK : UUID
+    - BNO를 등록하여 게시물 별 첨부파일 조회가 가능
+
+- AttachFile.class 생성
+
+### BoardAttachMapper 구현
+- 첨부파일 기능
+    - 첨부파일 등록 기능
+    - 첨부파일 삭제 기능
+    - 게시물 별 모든 첨부파일 조회 기능
