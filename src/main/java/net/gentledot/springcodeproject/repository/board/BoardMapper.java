@@ -1,7 +1,7 @@
 package net.gentledot.springcodeproject.repository.board;
 
-import net.gentledot.springcodeproject.model.board.PageCriteria;
 import net.gentledot.springcodeproject.model.board.Board;
+import net.gentledot.springcodeproject.model.board.PageCriteria;
 import net.gentledot.springcodeproject.model.board.PageSearchCriteria;
 import org.apache.ibatis.annotations.*;
 
@@ -12,6 +12,7 @@ import java.util.Optional;
 public interface BoardMapper {
     @Insert(value = "INSERT INTO tbl_board (title, content, writer) " +
             "VALUES (#{title}, #{content}, #{writer})")
+    @Options(useGeneratedKeys = true, keyProperty = "bno")
     Integer create(Board board);
 
     @Select("SELECT bno, title, content, writer, regdate, viewcnt " +
@@ -41,7 +42,7 @@ public interface BoardMapper {
     @Select("select count(1) from tbl_board")
     Long countPaging();
 
-//    @SelectProvider(value = BoardSearchProvider.class, method = "listSearchWithStringSQL")
+    //    @SelectProvider(value = BoardSearchProvider.class, method = "listSearchWithStringSQL")
     @SelectProvider(value = BoardSqlProvider.class, method = "listSearch")
     List<Board> findAllByKeyword(PageSearchCriteria criteria);
 

@@ -66,6 +66,14 @@ public class Board {
         return ++viewcnt;
     }
 
+    public List<AttachFile> getAttachList() {
+        return attachList;
+    }
+
+    public void setAttachList(List<AttachFile> attachList) {
+        this.attachList = attachList;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)
@@ -75,6 +83,7 @@ public class Board {
                 .append("writer", writer)
                 .append("regdate", regdate)
                 .append("viewcnt", viewcnt)
+                .append("attachList", attachList)
                 .toString();
     }
 
@@ -85,11 +94,12 @@ public class Board {
         private String writer;
         private LocalDateTime regdate;
         private Long viewcnt;
+        private List<AttachFile> attachList;
 
         public Builder() {
         }
 
-        public Builder(Board board){
+        public Builder(Board board) {
             this.bno = board.bno;
             this.title = board.title;
             this.content = board.content;
@@ -109,7 +119,7 @@ public class Board {
         }
 
         public Builder writer(String writer) {
-            if (this.writer == null){
+            if (this.writer == null) {
                 this.writer = writer;
             }
             return this;

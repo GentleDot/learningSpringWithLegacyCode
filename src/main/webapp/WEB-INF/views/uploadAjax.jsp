@@ -118,6 +118,7 @@
 
         // bigWrapper.css({display: 'flex'}).show();
         bigWrapper.style.display = "flex";
+        bigPicture.innerHTML = "";
 
         // bigPicture.html("<img src='/display?filename=" + encodeURI(filePath) + "'/>")
         let displayImage = document.createElement("img");

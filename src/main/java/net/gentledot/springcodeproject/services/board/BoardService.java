@@ -15,4 +15,6 @@ public interface BoardService {
     List<Board> listAll();
     Map<String, Object> listAllWithPagination(PageCriteria criteria);
     Map<String, Object> listSearchCriteria(PageSearchCriteria criteria);
+
+
 }

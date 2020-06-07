@@ -7,6 +7,10 @@ public class AttachFile {
     private String fileName;
     private String fileType;
 
+    protected AttachFile() {
+
+    }
+
     public AttachFile(String uuid, Long bno, String uploadPath, String fileName, String fileType) {
         this.uuid = uuid;
         this.bno = bno;
@@ -35,6 +39,25 @@ public class AttachFile {
         return fileType;
     }
 
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public void setBno(long bno) {
+        this.bno = bno;
+    }
+
+    public void setUploadPath(String uploadPath) {
+        this.uploadPath = uploadPath;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
+    }
 
     public static final class Builder {
         private String uuid;
@@ -70,5 +93,17 @@ public class AttachFile {
         public AttachFile build() {
             return new AttachFile(uuid, bno, uploadPath, fileName, fileType);
         }
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("AttachFile{");
+        sb.append("uuid='").append(uuid).append('\'');
+        sb.append(", bno=").append(bno);
+        sb.append(", uploadPath='").append(uploadPath).append('\'');
+        sb.append(", fileName='").append(fileName).append('\'');
+        sb.append(", fileType='").append(fileType).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }

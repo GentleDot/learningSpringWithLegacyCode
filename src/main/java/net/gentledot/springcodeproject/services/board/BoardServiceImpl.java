@@ -6,6 +6,7 @@ import net.gentledot.springcodeproject.model.board.Board;
 import net.gentledot.springcodeproject.model.board.PageCriteria;
 import net.gentledot.springcodeproject.model.board.PageMaker;
 import net.gentledot.springcodeproject.model.board.PageSearchCriteria;
+import net.gentledot.springcodeproject.repository.board.BoardAttachMapper;
 import net.gentledot.springcodeproject.repository.board.BoardMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,9 +19,11 @@ import java.util.Map;
 public class BoardServiceImpl implements BoardService {
 
     private final BoardMapper boardMapper;
+    private final BoardAttachMapper boardAttachMapper;
 
-    public BoardServiceImpl(BoardMapper boardMapper) {
+    public BoardServiceImpl(BoardMapper boardMapper, BoardAttachMapper boardAttachMapper) {
         this.boardMapper = boardMapper;
+        this.boardAttachMapper = boardAttachMapper;
     }
 
     @Transactional
@@ -30,6 +33,15 @@ public class BoardServiceImpl implements BoardService {
         if (result != 1) {
             throw new TransactionFailException("저장에 실패하였습니다.", Board.class);
         }
+
+        if (board.getAttachList() == null || board.getAttachList().size() <= 0) {
+            return;
+        }
+
+        board.getAttachList().forEach(attachFile -> {
+            attachFile.setBno(board.getBno());
+            boardAttachMapper.insert(attachFile);
+        });
     }
 
     @Override
@@ -62,9 +74,9 @@ public class BoardServiceImpl implements BoardService {
     }
 
     /*
-    * list = PageCriteria에서 설정한 page, page 내 보여줄 data를 기준으로 List<Board>가 담김
-    * pageMaker = Paging 처리를 위한 객체가 담김 (totalCount, startPage, endPage, prev, next, displayPageNum)
-    */
+     * list = PageCriteria에서 설정한 page, page 내 보여줄 data를 기준으로 List<Board>가 담김
+     * pageMaker = Paging 처리를 위한 객체가 담김 (totalCount, startPage, endPage, prev, next, displayPageNum)
+     */
     @Override
     public Map<String, Object> listAllWithPagination(PageCriteria criteria) {
         HashMap<String, Object> resultMap = new HashMap<>();
