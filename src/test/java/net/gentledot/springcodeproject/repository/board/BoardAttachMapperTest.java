@@ -26,12 +26,11 @@ class BoardAttachMapperTest {
     @Test
     @DisplayName("게시물 첨부파일 등록")
     void insertTest() {
-        AttachFile attachFile = new AttachFile.Builder(1L)
-                .uuid("test1234")
-                .fileName("testName")
-                .fileType("image")
-                .uploadPath("temp/test")
-                .build();
+        AttachFile attachFile = new AttachFile();
+        attachFile.setUuid("test1234");
+        attachFile.setFileName("testName");
+        attachFile.setFileType("image");
+        attachFile.setUploadPath("temp/test");
 
         Integer insert = boardAttachMapper.insert(attachFile);
 
@@ -53,5 +52,13 @@ class BoardAttachMapperTest {
         log.debug("1번 게시물의 첨부파일 리스트 : {}", attachFileList);
 
         assertThat(attachFileList, is(notNullValue()));
+    }
+
+    @Test
+    @DisplayName("게시물에 첨부된 모든 첨부파일 삭제")
+    void delteAllByBnoTest() {
+        Integer result = boardAttachMapper.delteAllByBno(1L);
+
+        assertThat(result, is(1)); // PreparedStatement.getUpdateCount(), 즉 처리 row 수를 return
     }
 }

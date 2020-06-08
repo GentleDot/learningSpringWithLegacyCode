@@ -1,10 +1,7 @@
 package net.gentledot.springcodeproject.repository.board;
 
 import net.gentledot.springcodeproject.model.board.AttachFile;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -20,4 +17,7 @@ public interface BoardAttachMapper {
     @Select("select uuid, bno, uploadPath, fileName, fileType\n " +
             "from tbl_attach where bno = #{bno}")
     List<AttachFile> findAllByBno(Long bno);
+
+    @Delete("delete from tbl_attach where bno = #{bno}")
+    Integer delteAllByBno(Long bno);
 }

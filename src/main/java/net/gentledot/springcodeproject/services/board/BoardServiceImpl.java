@@ -10,6 +10,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +34,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public void regist(Board board) {
         Integer result = boardMapper.create(board);
-        if (result != 1) {
+        if (result < 1) {
             throw new TransactionFailException("저장에 실패하였습니다.", Board.class);
         }
 
@@ -54,7 +58,7 @@ public class BoardServiceImpl implements BoardService {
     @Transactional
     public void modify(Board board) {
         Integer result = boardMapper.update(board);
-        if (result != 1) {
+        if (result < 1) {
             throw new TransactionFailException("수정에 실패하였습니다.", Board.class);
         }
     }
@@ -63,8 +67,13 @@ public class BoardServiceImpl implements BoardService {
     @Transactional
     public void remove(Long bno) {
         Integer result = boardMapper.delete(bno);
-        if (result != 1) {
+        if (result < 1) {
             throw new TransactionFailException("삭제에 실패하였습니다.", Board.class);
+        }
+
+        result = boardAttachMapper.delteAllByBno(bno);
+        if (result < 1) {
+            deleteAttachFiles(bno);
         }
     }
 
@@ -108,5 +117,36 @@ public class BoardServiceImpl implements BoardService {
         log.info("게시물 내 첨부파일 조회");
 
         return boardAttachMapper.findAllByBno(bno);
+    }
+
+
+    private void deleteAttachFiles(Long bno) {
+        String saveLocation = "C:\\upload\\";
+        List<AttachFile> attachList = getAttachList(bno);
+
+        if (attachList == null || attachList.size() <= 0) {
+            return;
+        }
+
+        log.info("첨부파일 제거 작업 진행");
+        log.info("첨부파일 List : {}", attachList);
+
+        attachList.forEach(attachFile -> {
+            try {
+                Path filePath = Paths.get(saveLocation + attachFile.getUploadPath()
+                        + "\\" + attachFile.getUuid() + "_" + attachFile.getFileName());
+                Files.deleteIfExists(filePath);
+
+
+                if (attachFile.getFileType().equals("image")) {
+                    Path thumbNailPath = Paths.get(saveLocation + attachFile.getUploadPath()
+                            + "\\s_" + attachFile.getUuid() + "_" + attachFile.getFileName());
+
+                    Files.delete(thumbNailPath);
+                }
+            } catch (IOException e) {
+                log.error("첨부파일 제거 작업에 오류가 발생하였습니다.", e);
+            }
+        });
     }
 }

@@ -7,7 +7,7 @@ public class AttachFile {
     private String fileName;
     private String fileType;
 
-    protected AttachFile() {
+    public AttachFile() {
 
     }
 

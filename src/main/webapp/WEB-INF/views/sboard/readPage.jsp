@@ -27,6 +27,12 @@
         height: auto;
     }
 
+    .uploadResult ul li img.fileIcon {
+        width: 20px;
+        margin: 2px 5px;
+        vertical-align: text-top;
+    }
+
     .uploadResult ul li span {
         color: #fff;
     }
