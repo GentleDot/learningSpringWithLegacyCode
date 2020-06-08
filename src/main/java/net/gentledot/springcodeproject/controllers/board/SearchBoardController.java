@@ -1,16 +1,21 @@
 package net.gentledot.springcodeproject.controllers.board;
 
+import net.gentledot.springcodeproject.model.board.AttachFile;
 import net.gentledot.springcodeproject.model.board.Board;
 import net.gentledot.springcodeproject.model.board.PageCriteria;
 import net.gentledot.springcodeproject.model.board.PageSearchCriteria;
 import net.gentledot.springcodeproject.services.board.BoardService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -96,5 +101,13 @@ public class SearchBoardController {
         redirectAttr.addFlashAttribute("result", SUCCESS_FLAG);
 
         return "redirect:/sboard/list";
+    }
+
+    @GetMapping(value = "/getAttachList", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<List<AttachFile>> getAttachList(Long bno) {
+        log.info("첨부파일 리스트 확인.");
+
+        return new ResponseEntity<>(boardService.getAttachList(bno), HttpStatus.OK);
     }
 }

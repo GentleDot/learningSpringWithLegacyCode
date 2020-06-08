@@ -2,10 +2,67 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 
+<style>
+    .uploadResult {
+        width: 100%;
+        background-color: #aaa;
+    }
+
+    .uploadResult ul {
+        display: flex;
+        flex-flow: row;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .uploadResult ul li {
+        list-style: none;
+        padding: 1em;
+        align-content: center;
+        text-align: center;
+    }
+
+    .uploadResult ul li img {
+        width: 100%;
+        height: auto;
+    }
+
+    .uploadResult ul li span {
+        color: #fff;
+    }
+
+    .bigPictureWrapper {
+        position: absolute;
+        display: none;
+        top: 0;
+        z-index: 100;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(200, 200, 200, 0.5);
+        justify-content: center;
+        align-items: center;
+    }
+
+    .bigPicture {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .bigPicture img {
+        width: 600px;
+    }
+</style>
+
 <%@include file="../include/header.jsp" %>
 
 <!-- Main content -->
 <section class="content">
+    <div class="bigPictureWrapper">
+        <div class="bigPicture"></div>
+    </div>
+    <!-- end bigPictureWrapper -->
     <div class="row">
         <!-- left column -->
         <div class="col-md-12">
@@ -61,6 +118,24 @@
 
     </div>
     <!-- /.row -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">files</div>
+                <div class="panel-body">
+                    <div class="uploadResult">
+                        <ul>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- end panel -->
+        </div>
+        <!-- end col -->
+    </div>
+    <!-- end row -->
 
     <div class="row">
         <div class="col-md-12">
@@ -140,6 +215,26 @@
     var service = new ReplyService();
     var boardNo = ${board.bno};
 
+    function showImage(filePath) {
+        console.log("실행 확인 ?");
+        let bigWrapper = document.querySelector('.bigPictureWrapper');
+        let bigPicture = document.querySelector('.bigPictureWrapper .bigPicture');
+
+        if (bigPicture.hasChildNodes()) {
+            return;
+        }
+
+        console.log("이미지 경로 : " + filePath);
+        // bigWrapper.css({display: 'flex'}).show();
+        bigWrapper.style.display = "flex";
+
+        // bigPicture.html("<img src='/display?filename=" + encodeURI(filePath) + "'/>")
+        let displayImage = document.createElement("img");
+        displayImage.setAttribute("src", "/display?fileName=" + filePath);
+        bigPicture.appendChild(displayImage);
+        // bigPicture.animate({width: '100%', height: '100%'}, 1000);
+        bigPicture.animate([{width: '0', height: '0'}, {width: '100%', height: '100%'}], {duration: 1000});
+    }
 
     $(document).ready(function () {
 
@@ -149,6 +244,55 @@
         console.log(formObj);
 
         printReplyList();
+
+        function printReplyList() {
+            service.getList(boardNo, function (list) {
+                let length = list.length || 0;
+                console.log("댓글 수 : " + length);
+                console.log("list_index 0 확인 : " + JSON.stringify(list[0]));
+
+
+                $("#replycntSmall").html("[ " + length + " ]");
+                let replyLi = "";
+
+                $(list).each(function () {
+                    replyLi += "<li class=\"replyLi\" data-rno=\"" + this.rno + "\" data-replyer=\"" + this.replyer + "\">\n" +
+                        "    <i class=\"fa fa-comments bg-blue\"></i>\n" +
+                        "    <div class=\"timeline-item\">\n" +
+                        "        <span class=\"time\"><i class=\"fa fa-clock-o\"></i> " + this.regdate + "</span>\n" +
+                        "        <h3 class=\"timeline-header\"><strong> &lt" + this.rno + "&gt " + this.replyer + "</strong></h3>\n" +
+                        "        <div class=\"timeline-body\"> " + this.replytext + "</div>\n" +
+                        "        <div class=\"timeline-footer\">\n" +
+                        "            <a class=\"btn btn-primary btn-xs\" data-toggle=\"modal\" data-target=\"#modifyModal\">수정</a>\n" +
+                        "        </div>\n" +
+                        "    </div>\n" +
+                        "</li>";
+                });
+
+                $(".timeline").html(replyLi);
+            });
+        }
+
+        fetch("/sboard/getAttachList?bno=" + boardNo)
+            .then(result => result.json()).then(list => {
+            console.log(list);
+            list.forEach(file => {
+                let li = document.createElement("li");
+                li.setAttribute("data-path", file.uploadPath);
+                li.setAttribute("data-uuid", file.uuid);
+                li.setAttribute("data-filename", file.fileName);
+                li.setAttribute("data-type", file.fileType);
+                if (file.fileType === "image") {
+                    let uploadImagePath = file.uploadPath + "/" + file.uuid + "_" + file.fileName;
+                    let fileCallPath = encodeURIComponent(file.uploadPath + "/s_" + file.uuid + "_" + file.fileName);
+                    li.innerHTML = "<a href='javascript:showImage(\"" + uploadImagePath + "\")'><img src='/display?fileName=" + fileCallPath + "'/></a>"
+                } else {
+                    fileCallPath = encodeURIComponent(file.uploadPath + "/" + file.uuid + "_" + file.fileName);
+                    li.innerHTML = "<a href='/download?fileName=" + fileCallPath + "'><img class='fileIcon' src='/resources/dist/img/attach.png'/>" + file.fileName + "</a>"
+                }
+                document.querySelector('.uploadResult ul').append(li);
+            });
+        });
 
         $("#boardBtnMod").on("click", function () {
             formObj.attr("action", "/sboard/modifyPage");
@@ -232,34 +376,14 @@
 
         });
 
-        function printReplyList() {
-            service.getList(boardNo, function (list) {
-                let length = list.length || 0;
-                console.log("댓글 수 : " + length);
-                console.log("list_index 0 확인 : " + JSON.stringify(list[0]));
-
-
-                $("#replycntSmall").html("[ " + length + " ]");
-                let replyLi = "";
-
-                $(list).each(function () {
-                    replyLi += "<li class=\"replyLi\" data-rno=\"" + this.rno + "\" data-replyer=\"" + this.replyer + "\">\n" +
-                        "    <i class=\"fa fa-comments bg-blue\"></i>\n" +
-                        "    <div class=\"timeline-item\">\n" +
-                        "        <span class=\"time\"><i class=\"fa fa-clock-o\"></i> " + this.regdate + "</span>\n" +
-                        "        <h3 class=\"timeline-header\"><strong> &lt" + this.rno + "&gt " + this.replyer + "</strong></h3>\n" +
-                        "        <div class=\"timeline-body\"> " + this.replytext + "</div>\n" +
-                        "        <div class=\"timeline-footer\">\n" +
-                        "            <a class=\"btn btn-primary btn-xs\" data-toggle=\"modal\" data-target=\"#modifyModal\">수정</a>\n" +
-                        "        </div>\n" +
-                        "    </div>\n" +
-                        "</li>";
-                });
-
-                $(".timeline").html(replyLi);
-            });
-        }
-
+        document.querySelector('.bigPictureWrapper').addEventListener("click", (event) => {
+            let bigPicture = document.querySelector('.bigPictureWrapper .bigPicture');
+            bigPicture.animate([{width: '100%', height: '100%'}, {width: '0', height: '0'}], {duration: 1000});
+            setTimeout(() => {
+                document.querySelector('.bigPictureWrapper').style.display = "none";
+                bigPicture.innerHTML = ""; // init
+            }, 500);
+        });
     });
 
 </script>

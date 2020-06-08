@@ -1,10 +1,14 @@
 package net.gentledot.springcodeproject.controllers.board;
 
+import net.gentledot.springcodeproject.model.board.AttachFile;
 import net.gentledot.springcodeproject.model.board.PageCriteria;
 import net.gentledot.springcodeproject.model.board.Board;
 import net.gentledot.springcodeproject.services.board.BoardService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -139,6 +143,4 @@ public class BoardController {
 
         return "redirect:/board/listPage";
     }
-
-
 }

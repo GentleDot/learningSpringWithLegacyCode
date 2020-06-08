@@ -2,12 +2,11 @@ package net.gentledot.springcodeproject.services.board;
 
 import net.gentledot.springcodeproject.errors.TargetNotFoundException;
 import net.gentledot.springcodeproject.errors.TransactionFailException;
-import net.gentledot.springcodeproject.model.board.Board;
-import net.gentledot.springcodeproject.model.board.PageCriteria;
-import net.gentledot.springcodeproject.model.board.PageMaker;
-import net.gentledot.springcodeproject.model.board.PageSearchCriteria;
+import net.gentledot.springcodeproject.model.board.*;
 import net.gentledot.springcodeproject.repository.board.BoardAttachMapper;
 import net.gentledot.springcodeproject.repository.board.BoardMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +16,7 @@ import java.util.Map;
 
 @Service
 public class BoardServiceImpl implements BoardService {
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     private final BoardMapper boardMapper;
     private final BoardAttachMapper boardAttachMapper;
@@ -101,5 +101,12 @@ public class BoardServiceImpl implements BoardService {
         resultMap.put("pageMaker", pageMaker);
 
         return resultMap;
+    }
+
+    @Override
+    public List<AttachFile> getAttachList(Long bno) {
+        log.info("게시물 내 첨부파일 조회");
+
+        return boardAttachMapper.findAllByBno(bno);
     }
 }
