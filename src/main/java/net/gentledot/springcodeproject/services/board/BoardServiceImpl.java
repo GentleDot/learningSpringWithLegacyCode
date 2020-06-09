@@ -61,6 +61,16 @@ public class BoardServiceImpl implements BoardService {
         if (result < 1) {
             throw new TransactionFailException("수정에 실패하였습니다.", Board.class);
         }
+
+        boardAttachMapper.delteAllByBno(board.getBno());
+
+        List<AttachFile> attachList = board.getAttachList();
+        if (attachList.size() > 0) {
+            attachList.forEach(attachFile -> {
+                attachFile.setBno(board.getBno());
+                boardAttachMapper.insert(attachFile);
+            });
+        }
     }
 
     @Override
